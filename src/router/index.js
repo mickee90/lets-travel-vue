@@ -1,89 +1,90 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import Trips from '../views/trips/Trips.vue'
-import Trip from '../views/trips/Trip.vue'
-import Posts from '../views/posts/Posts.vue'
-import Post from '../views/posts/Post.vue'
-import PostEdit from '../views/posts/PostEdit.vue'
-import PostCreate from '../views/posts/PostCreate.vue'
-import Maps from '../views/maps/Maps.vue'
-import Checklist from '../views/checklists/Checklist.vue'
-import BucketList from '../views/bucketlist/BucketList.vue'
-import Budget from '../views/budget/Budget.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Login from "../views/Login.vue";
+import Trips from "../views/trips/Trips.vue";
+import Trip from "../views/trips/Trip.vue";
+import Posts from "../views/posts/Posts.vue";
+import Post from "../views/posts/Post.vue";
+import PostEdit from "../views/posts/PostEdit.vue";
+import PostCreate from "../views/posts/PostCreate.vue";
+import Maps from "../views/maps/Maps.vue";
+import Checklist from "../views/checklists/Checklist.vue";
+import BucketList from "../views/bucketlist/BucketList.vue";
+import Budget from "../views/budget/Budget.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'login',
+    path: "/",
+    name: "login",
     component: Login
   },
   {
-    path: '/trips',
-    name: 'trips',
+    path: "/trips",
+    name: "trips",
     component: Trips
   },
   {
-    path: '/trip',
-    name: 'trip',
+    path: "/trip",
+    name: "trip",
     component: Trip
   },
   {
-    path: '/posts',
-    name: 'posts',
+    path: "/posts",
+    name: "posts",
     component: Posts
   },
   {
-    path: '/post',
-    name: 'post',
+    path: "/post/:postId",
+    name: "post",
     component: Post
   },
   {
-    path: '/post/edit',
-    name: 'post-edit',
+    path: "/post/:postId/edit",
+    name: "post-edit",
     component: PostEdit
   },
   {
-    path: '/post/create',
-    name: 'post-create',
+    path: "/post/create",
+    name: "post-create",
     component: PostCreate
   },
   {
-    path: '/maps',
-    name: 'maps',
+    path: "/maps",
+    name: "maps",
     component: Maps
   },
   {
-    path: '/checklist',
-    name: 'checklist',
+    path: "/checklist",
+    name: "checklist",
     component: Checklist
   },
   {
-    path: '/bucket-list',
-    name: 'bucketList',
+    path: "/bucket-list",
+    name: "bucketList",
     component: BucketList
   },
   {
-    path: '/budget',
-    name: 'budget',
+    path: "/budget",
+    name: "budget",
     component: Budget
   },
   {
-    path: '/about',
-    name: 'about',
+    path: "/about",
+    name: "about",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
   }
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

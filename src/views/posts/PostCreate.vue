@@ -22,7 +22,7 @@
               class="form-control title-input"
               name="title"
               placeholder="Title *"
-              value
+              :value="post.title"
               required
               autocomplete="title"
               autofocus
@@ -38,13 +38,19 @@
                 type="date"
                 class="form-control"
                 name="start_date"
-                value
+                :value="post.start_date"
                 required
               />
             </div>
             <div class="col-md-6">
               <label for="end_date">End Date</label>
-              <input id="end_date" type="date" class="form-control" name="end_date" value />
+              <input
+                id="end_date"
+                type="date"
+                class="form-control"
+                name="end_date"
+                :value="post.end_date"
+              />
             </div>
           </div>
 
@@ -52,7 +58,13 @@
             <label for="content" class="col-12">Content</label>
 
             <div class="col-md-12">
-              <textarea id="content" class="form-control" name="content" rows="10"></textarea>
+              <textarea
+                id="content"
+                class="form-control"
+                name="content"
+                rows="10"
+                :value="post.content"
+              ></textarea>
             </div>
           </div>
 
@@ -97,6 +109,17 @@
 import TabBar from "../layout/TabBar.vue";
 
 export default {
+  data() {
+    return {
+      post: {
+        id: null,
+        title: null,
+        content: null,
+        start_date: null,
+        end_date: null
+      }
+    };
+  },
   components: {
     appTabBar: TabBar
   }

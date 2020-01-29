@@ -1,4 +1,8 @@
-html, body, #app, main, .banner-image {
+html,
+body,
+#app,
+main,
+.banner-image {
   height: 100%;
 }
 
@@ -87,6 +91,7 @@ body {
 
 .trips .card {
   height: 200px;
+  overflow: hidden;
 }
 
 .trip-footer {
@@ -100,7 +105,6 @@ body {
   line-height: 40px;
   height: 40px;
   overflow: hidden;
-
 }
 
 .add-trip-icon {
@@ -115,7 +119,7 @@ body {
   height: auto;
 }
 
-.trip-image input[type=radio] {
+.trip-image input[type="radio"] {
   position: absolute;
   top: 20px;
   right: 30px;
@@ -124,14 +128,15 @@ body {
   -webkit-appearance: none;
 }
 
-.trip-image input[type=radio]:checked {
-  background: url(data:image/gif;base64,R0lGODlhAQABAPAAAP///////yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==) no-repeat center center;
+.trip-image input[type="radio"]:checked {
+  background: url(data:image/gif;base64,R0lGODlhAQABAPAAAP///////yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==)
+    no-repeat center center;
   background-size: 11px 10px;
 }
 
-.trip-image input[type=radio]:focus,
-.trip-image input[type=radio]:checked,
-.trip-image input[type=radio]:visited {
+.trip-image input[type="radio"]:focus,
+.trip-image input[type="radio"]:checked,
+.trip-image input[type="radio"]:visited {
   outline: transparent;
 }
 
@@ -161,7 +166,8 @@ body {
   opacity: 0.5;
 }
 
-.item-view button, .item-view button:focus {
+.item-view button,
+.item-view button:focus {
   border: none;
   outline: none;
   background: none;
@@ -204,7 +210,7 @@ body {
   margin: 0px -15px 10px -15px;
   padding: 10px 15px 10px;
   background: #fff;
-  box-shadow: 0 3px 10px -10px rgba(0,0,0,0.75);
+  box-shadow: 0 3px 10px -10px rgba(0, 0, 0, 0.75);
 }
 
 .map-marker-checkbox {
@@ -258,9 +264,9 @@ body {
 }
 
 .maps-marker-buttons-bar {
-  display:block;
-  clear:both;
-  margin-top:10px;
+  display: block;
+  clear: both;
+  margin-top: 10px;
 }
 
 .maps-marker-buttons-bar .edit-btn {
@@ -305,7 +311,7 @@ body {
   border-radius: 50%;
   background: blue;
   z-index: 9999;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .avatar-placeholder {

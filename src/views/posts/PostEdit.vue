@@ -24,7 +24,7 @@
                   class="form-control title-input"
                   name="title"
                   placeholder="Title *"
-                  value="Post title #1"
+                  :value="post.title"
                   autocomplete="title"
                   autofocus
                 />
@@ -39,13 +39,19 @@
                     type="date"
                     class="form-control"
                     name="start_date"
-                    value="2020-03-01"
+                    :value="post.start_date"
                     required
                   />
                 </div>
                 <div class="col-md-6">
                   <label for="end_date">End Date</label>
-                  <input id="end_date" type="date" class="form-control" name="end_date" value />
+                  <input
+                    id="end_date"
+                    type="date"
+                    class="form-control"
+                    name="end_date"
+                    :value="post.end_date"
+                  />
                 </div>
               </div>
 
@@ -53,7 +59,13 @@
                 <label for="content" class="col-12">Content</label>
 
                 <div class="col-md-12">
-                  <textarea id="content" class="form-control" name="content" rows="10"></textarea>
+                  <textarea
+                    id="content"
+                    class="form-control"
+                    name="content"
+                    rows="10"
+                    :value="post.content"
+                  ></textarea>
                 </div>
               </div>
 
@@ -99,8 +111,21 @@
 
 <script>
 import TabBar from "../layout/TabBar.vue";
+import { posts } from "../../mock-data/posts";
 
 export default {
+  data() {
+    return {
+      post: {}
+    };
+  },
+  created() {
+    const post = posts.filter(
+      post => post.id == this.$router.history.current.params.postId
+    );
+    this.post = post[0];
+    console.log(this.post);
+  },
   components: {
     appTabBar: TabBar
   }

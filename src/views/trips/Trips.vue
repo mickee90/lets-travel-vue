@@ -10,43 +10,54 @@
         </div>
       </div>
       <div class="col-md-3">
-        <a href="#">
+        <router-link
+          :to="{name: 'trips', params:{tripId: trip.id}}"
+          v-for="trip in trips"
+          :key="trip.id"
+          tag="a"
+        >
           <div class="card">
-            <img
-              src="../../../public/imgs/trips/soccer.jpg"
-              alt="../../../public/imgs/trips/soccer.jpg"
-              class="card-img"
-            />
-            <div class="trip-footer">Trip #1</div>
+            <!-- @todo make dynamic! -->
+            <img src="@/assets/imgs/trips/soccer.jpg" :alt="trip.image.title" class="card-img" />
+            <div class="trip-footer">{{ trip.title }}</div>
           </div>
-        </a>
-        <a href="#">
-          <div class="card">
-            <img
-              src="../../../public/imgs/trips/city_cliff.jpg"
-              alt="../../../public/imgs/trips/city_cliff.jpg"
-              class="card-img"
-            />
-            <div class="trip-footer">Trip #2</div>
-          </div>
-        </a>
-        <a href="#">
-          <div class="card">
-            <img
-              src="../../../public/imgs/trips/landscape_country.jpg"
-              alt="../../../public/imgs/trips/landscape_country.jpg"
-              class="card-img"
-            />
-            <div class="trip-footer">Trip #3</div>
-          </div>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import TabBar from "../layout/TabBar.vue";
+import { trips } from "../../mock-data/trips";
+import { trip_images } from "../../mock-data/trip_images";
+
+export default {
+  data() {
+    return {
+      trips: [],
+      trip_images: []
+    };
+  },
+  created() {
+    this.trips = trips.map(trip => {
+      const image = trip_images.filter(
+        image => image.id === trip.trip_image_id
+      );
+      trip.image = image[0];
+      return trip;
+    });
+  },
+  methods: {
+    imagePath(id) {
+      const image = this.trip_images.filter(image => image.id === id);
+      return image[0].path;
+    }
+  },
+  components: {
+    appTabBar: TabBar
+  }
+};
 </script>
 
 <style scoped>
