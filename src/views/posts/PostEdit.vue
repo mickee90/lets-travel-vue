@@ -28,65 +28,32 @@
                   autocomplete="title"
                   autofocus
                 />
-                @error('title')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
               </div>
 
               <div class="form-group trip-row">
                 <div class="col-md-6">
-                  <label for="start_date">{{ __('Start date') }} *</label>
+                  <label for="start_date">Start date *</label>
 
                   <input
                     id="start_date"
                     type="date"
-                    class="form-control @error('start_date') is-invalid @enderror"
+                    class="form-control"
                     name="start_date"
-                    value="{{ $post->start_date ? \Carbon\Carbon::parse($post->start_date)->toDateString() : '' }}"
+                    value="2020-03-01"
                     required
                   />
-                  @error('start_date')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
                 </div>
                 <div class="col-md-6">
-                  <label for="end_date">{{ __('End Date') }}</label>
-                  <input
-                    id="end_date"
-                    type="date"
-                    class="form-control @error('end_date') is-invalid @enderror"
-                    name="end_date"
-                    value="{{ $post->end_date ? \Carbon\Carbon::parse($post->end_date)->toDateString() : '' }}"
-                  />
-                  @error('end_date')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
+                  <label for="end_date">End Date</label>
+                  <input id="end_date" type="date" class="form-control" name="end_date" value />
                 </div>
               </div>
 
               <div class="form-group trip-row">
-                <label for="content" class="col-12">{{ __('Content') }}</label>
+                <label for="content" class="col-12">Content</label>
 
                 <div class="col-md-12">
-                  <textarea
-                    id="content"
-                    class="form-control @error('content') is-invalid @enderror"
-                    name="content"
-                    rows="10"
-                  >
-                                        {{ $post->content }}
-                                    </textarea>
-                  @error('content')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
+                  <textarea id="content" class="form-control" name="content" rows="10"></textarea>
                 </div>
               </div>
 
@@ -114,7 +81,7 @@
                     onclick="searchMarker();return false;"
                     class="btn btn-primary"
                     style="border-radius:0;"
-                  >{{ __('Search') }}</button>
+                  >Search</button>
                 </div>
 
                 <ul id="search-result-list" class="form-group row hide" style="padding:0;"></ul>

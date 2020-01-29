@@ -6,6 +6,11 @@ import Trip from '../views/trips/Trip.vue'
 import Posts from '../views/posts/Posts.vue'
 import Post from '../views/posts/Post.vue'
 import PostEdit from '../views/posts/PostEdit.vue'
+import PostCreate from '../views/posts/PostCreate.vue'
+import Maps from '../views/maps/Maps.vue'
+import Checklist from '../views/checklists/Checklist.vue'
+import BucketList from '../views/bucketlist/BucketList.vue'
+import Budget from '../views/budget/Budget.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +44,31 @@ const routes = [
     path: '/post/edit',
     name: 'post-edit',
     component: PostEdit
+  },
+  {
+    path: '/post/create',
+    name: 'post-create',
+    component: PostCreate
+  },
+  {
+    path: '/maps',
+    name: 'maps',
+    component: Maps
+  },
+  {
+    path: '/checklist',
+    name: 'checklist',
+    component: Checklist
+  },
+  {
+    path: '/bucket-list',
+    name: 'bucketList',
+    component: BucketList
+  },
+  {
+    path: '/budget',
+    name: 'budget',
+    component: Budget
   },
   {
     path: '/about',
