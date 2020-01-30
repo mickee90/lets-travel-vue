@@ -1,24 +1,20 @@
 <template>
   <div>
-    <checkable-list-add-item
-      v-if="showAddItem === true"
-      @addNewItem="showAddItem = true"
-      @itemAdded="showAddItem = false"
-      @added="addToBeginning"
-    ></checkable-list-add-item>
+    <!-- <checkable-list-add-item v-if="showAddItem === true"></checkable-list-add-item> -->
 
-    <checkable-list-item
+    <app-checkable-list-item
       v-for="(item, index) in items"
       :item="item"
       :index="index"
       :key="index"
       @deleted="remove(index)"
-    ></checkable-list-item>
+    ></app-checkable-list-item>
   </div>
 </template>
 
 <script>
-import collection from "../../mixins/collections";
+//import collection from "../../mixins/collections";
+import CheckableListItem from "./CheckableListItem.vue";
 
 export default {
   props: ["items"],
@@ -27,6 +23,9 @@ export default {
     return {
       showAddItem: true
     };
+  },
+  components: {
+    appCheckableListItem: CheckableListItem
   }
 };
 </script>

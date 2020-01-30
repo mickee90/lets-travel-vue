@@ -44,7 +44,7 @@ export default {
     };
   },
   created() {
-    return (this.posts = posts);
+    this.posts = posts;
   },
   components: {
     appTabBar: TabBar

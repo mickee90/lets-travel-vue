@@ -1,4 +1,4 @@
-export const posts = [
+export const bucketListItems = [
   {
     id: 1,
     trip_id: 1,

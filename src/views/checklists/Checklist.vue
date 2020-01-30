@@ -28,6 +28,7 @@
 <script>
 import TabBar from "../layout/TabBar.vue";
 import { checklistItems } from "../../mock-data/checklist-items";
+import CheckableList from "../../components/Checklists/CheckableList.vue";
 
 export default {
   data() {
@@ -39,7 +40,8 @@ export default {
     this.checklistItems = checklistItems;
   },
   components: {
-    appTabBar: TabBar
+    appTabBar: TabBar,
+    appCheckableList: CheckableList
   }
 };
 </script>

@@ -16,56 +16,23 @@
         </div>
 
         <div class="item-list">
-          <div class="col-12 post completed">
-            <div class="list-item-title col-8 pl-2 pr-0">Item title #1</div>
+          <div
+            class="col-12 post"
+            :class="{'completed': item.completed}"
+            v-for="item in items"
+            :key="item.id"
+          >
+            <div class="list-item-title col-8 pl-2 pr-0">{{ item.title }}</div>
             <div class="list-item-check col-2 pr-0">
               <input
                 type="checkbox"
-                data-item_id="1"
+                :data-item_id="item.id"
                 onclick="App.ListItems.toggleItem(this)"
-                checked
+                :checked="item.completed"
               />
             </div>
             <div class="list-item-delete col-2 pr-0 pl-2">
-              <button onclick="App.ListItems.destroyItem(this)" data-item_id="1">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          <div class="col-12 post completed">
-            <div class="list-item-title col-8 pl-2 pr-0">Item title #2</div>
-            <div class="list-item-check col-2 pr-0">
-              <input
-                type="checkbox"
-                data-item_id="2"
-                onclick="App.ListItems.toggleItem(this)"
-                checked
-              />
-            </div>
-            <div class="list-item-delete col-2 pr-0 pl-2">
-              <button onclick="App.ListItems.destroyItem(this)" data-item_id="2">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          <div class="col-12 post">
-            <div class="list-item-title col-8 pl-2 pr-0">Item title #4</div>
-            <div class="list-item-check col-2 pr-0">
-              <input type="checkbox" data-item_id="3" onclick="App.ListItems.toggleItem(this)" />
-            </div>
-            <div class="list-item-delete col-2 pr-0 pl-2">
-              <button onclick="App.ListItems.destroyItem(this)" data-item_id="3">
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          <div class="col-12 post">
-            <div class="list-item-title col-8 pl-2 pr-0">Item title #4</div>
-            <div class="list-item-check col-2 pr-0">
-              <input type="checkbox" data-item_id="4" onclick="App.ListItems.toggleItem(this)" />
-            </div>
-            <div class="list-item-delete col-2 pr-0 pl-2">
-              <button onclick="App.ListItems.destroyItem(this)" data-item_id="4">
+              <button onclick="App.ListItems.destroyItem(this)" :data-item_id="item.id">
                 <i class="fas fa-trash"></i>
               </button>
             </div>
@@ -79,8 +46,17 @@
 
 <script>
 import TabBar from "../layout/TabBar.vue";
+import { bucketListItems } from "../../mock-data/bucket-list-items";
 
 export default {
+  data() {
+    return {
+      items: []
+    };
+  },
+  created() {
+    this.items = bucketListItems;
+  },
   components: {
     appTabBar: TabBar
   }

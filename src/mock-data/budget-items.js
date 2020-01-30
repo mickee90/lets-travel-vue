@@ -1,4 +1,4 @@
-export const posts = [
+export const budgetItems = [
   {
     id: 1,
     budget_id: 1,
