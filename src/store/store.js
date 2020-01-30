@@ -1,11 +1,19 @@
-import vue from 'vue';
-import Vuex from 'vuex';
-import { postStore } from './postStore.js'
+import Vue from "vue";
+import Vuex from "vuex";
+import { tripStore } from "./modules/tripStore.js";
+import { postStore } from "./modules/postStore.js";
+import { checklistStore } from "./modules/checklistStore.js";
+import { bucketListStore } from "./modules/bucketListStore.js";
+import { budgetStore } from "./modules/budgetStore.js";
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
-    modules: {
-        posts: postStore
-    }
-})
+export default new Vuex.Store({
+  modules: {
+    trips: tripStore,
+    posts: postStore,
+    checklist: checklistStore,
+    bucketList: bucketListStore,
+    budget: budgetStore
+  }
+});

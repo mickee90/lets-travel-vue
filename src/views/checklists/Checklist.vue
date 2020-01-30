@@ -31,13 +31,13 @@ import { checklistItems } from "../../mock-data/checklist-items";
 import CheckableList from "../../components/Checklists/CheckableList.vue";
 
 export default {
-  data() {
-    return {
-      checklistItems: []
-    };
+  computed: {
+    checklistItems() {
+      return this.$store.getters.getChecklistItems;
+    }
   },
-  created() {
-    this.checklistItems = checklistItems;
+  beforeCreate() {
+    this.$store.dispatch("storeChecklistItems", checklistItems);
   },
   components: {
     appTabBar: TabBar,

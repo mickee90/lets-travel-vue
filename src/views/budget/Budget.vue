@@ -21,8 +21,8 @@
 
             <div id="show-budget-box" class="col-6 row pr-0">
               <div class="col-8 pr-0">
-                <span id="total_amount">{{ budget.total_amount}}</span>
                 {{ budget.currency }}
+                <span id="total_amount">{{ budget.total_amount}}</span>
               </div>
               <div class="text-md-rights col-4">
                 <button onclick="App.Budget.editTotalAmount(this)" data-js="edit-budget-btn">
@@ -52,90 +52,19 @@
           <div class="col-12 d-flex">
             <div class="col-6">Remaining:</div>
             <div class="col-6">
-              <span id="remainings">{{ budget.remaining }}</span>
               {{ budget.currency }}
+              <span id="remainings">{{ budget.remaining }}</span>
             </div>
           </div>
         </div>
 
         <div class="item-list">
-          <div
-            class="col-12 post budget-item"
-            :data-item_id="item.id"
-            v-for="item in items"
+          <app-budget-list-item
+            v-for="item in budgetItems"
+            :item="item"
             :key="item.id"
-          >
-            <div class="col-8 pl-2 pr-0 row">
-              <div class="budget-item-title col-12">
-                <input
-                  type="text"
-                  name="item_title"
-                  :value="item.title"
-                  style="width:100%;"
-                  class="budget-item-title-input"
-                  disabled
-                />
-              </div>
-              <div class="budget-item-date col-12">
-                <input
-                  type="date"
-                  class="form-control item-input budget-item-start_date-input"
-                  name="item_start_date"
-                  :value="item.start_date"
-                  disabled
-                />
-              </div>
-            </div>
-
-            <div class="col-6 row show-budget-item-box">
-              <div class="col-6 budget-amount-wrapper">
-                <div class="budget-item-amount">
-                  <span class="amount">{{ item.amount }}</span>
-                  {{ budget.currency }}
-                </div>
-              </div>
-
-              <div class="col-6 row pl-0">
-                <div class="budget-item-delete col-12 m-auto">
-                  <button onclick="App.Budget.destroyItem(this)" :data-item_id="item.id">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-                <div class="budget-item-update col-12 m-auto">
-                  <button onclick="App.Budget.editItem(this)" :data-item_id="item.id">
-                    <i class="fas fa-pen"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-6 row edit-budget-item-box" style="display:none;">
-              <div class="col-6 budget-amount-wrapper">
-                <div class="budget-item-amount" style="border-bottom: none;">
-                  <input
-                    type="text"
-                    name="item_amount"
-                    :value="item.amount"
-                    style="width:100%;"
-                    autofocus
-                  />
-                </div>
-              </div>
-
-              <div class="col-6 row pl-0">
-                <div class="budget-item-delete col-12 m-auto">
-                  <button onclick="App.Budget.destroyItem(this)" :data-item_id="item.id">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-                <div class="budget-item-update col-12 m-auto">
-                  <button onclick="App.Budget.updateItem(this)" :data-item_id="item.id">
-                    <i class="fas fa-check"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+            :budget="budget"
+          ></app-budget-list-item>
         </div>
         <app-tab-bar></app-tab-bar>
       </div>
@@ -147,20 +76,28 @@
 import TabBar from "../layout/TabBar.vue";
 import { budget } from "../../mock-data/budget";
 import { budgetItems } from "../../mock-data/budget-items";
+import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
 
 export default {
-  data() {
-    return {
-      items: [],
-      budget: null
-    };
+  computed: {
+    budget() {
+      return this.$store.getters.getBudget;
+    },
+    budgetItems() {
+      console.log(this.$store.getters.getBudgetItems);
+      return this.$store.getters.getBudgetItems;
+    }
   },
-  created() {
-    this.budget = budget;
-    this.items = budgetItems;
+  beforeCreate() {
+    const itemSum = budgetItems.reduce((acc, item) => acc + item.amount, 0);
+    const remainings = budget.remaining - itemSum;
+
+    this.$store.dispatch("storeBudgetItems", budgetItems);
+    this.$store.dispatch("storeBudget", { ...budget, remaining: remainings });
   },
   components: {
-    appTabBar: TabBar
+    appTabBar: TabBar,
+    appBudgetListItem: BudgetListItem
   }
 };
 </script>

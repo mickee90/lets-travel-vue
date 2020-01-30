@@ -1,11 +1,11 @@
 <template>
-  <div class="col-12 post" :class="completed ? 'completed' : ''" :key="item.id">
+  <div class="col-12 post" :class="{'completed': item.completed}" :key="item.id">
     <div class="list-item-title col-8 pl-2 pr-0" v-text="item.title"></div>
     <div class="list-item-check col-2 pr-0">
-      <input type="checkbox" :data-item_id="item.id" :checked="completed || ''" />
+      <input type="checkbox" v-model="item.completed" />
     </div>
     <div class="list-item-delete col-2 pr-0 pl-2">
-      <button :data-item_id="item.id">
+      <button @click="onDelete(item.id)">
         <i class="fas fa-trash"></i>
       </button>
     </div>
@@ -14,12 +14,14 @@
 
 <script>
 export default {
-  props: ["item", "index"],
-
-  data() {
-    return {
-      completed: this.item.completed
-    };
+  props: ["item"],
+  methods: {
+    onDelete(id) {
+      const items = this.$store.getters.getBucketListItems.filter(
+        item => item.id !== id
+      );
+      this.$store.dispatch("storeBucketListItems", items);
+    }
   }
 
   /* methods: {

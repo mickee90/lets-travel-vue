@@ -38,5 +38,5 @@ export const budgetItems = [
     amount: 1300,
     start_date: "2020-03-05",
     end_date: "2020-03-05"
-  },
+  }
 ];

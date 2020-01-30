@@ -38,13 +38,13 @@ import TabBar from "../layout/TabBar.vue";
 import { posts } from "../../mock-data/posts";
 
 export default {
-  data() {
-    return {
-      posts: []
-    };
+  computed: {
+    posts() {
+      return this.$store.getters.getPosts;
+    }
   },
-  created() {
-    this.posts = posts;
+  beforeCreate() {
+    this.$store.dispatch("storePosts", posts);
   },
   components: {
     appTabBar: TabBar
