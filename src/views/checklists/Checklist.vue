@@ -16,7 +16,7 @@
         </div>
 
         <div class="item-list">
-          <!--  <checkable-list :items="{{ $items }}"></checkable-list> -->
+          <app-checkable-list :items="checklistItems"></app-checkable-list>
         </div>
         <app-tab-bar></app-tab-bar>
       </div>
@@ -24,10 +24,20 @@
   </div>
 </template>
 
+
 <script>
 import TabBar from "../layout/TabBar.vue";
+import { checklistItems } from "../../mock-data/checklist-items";
 
 export default {
+  data() {
+    return {
+      checklistItems: []
+    };
+  },
+  created() {
+    this.checklistItems = checklistItems;
+  },
   components: {
     appTabBar: TabBar
   }

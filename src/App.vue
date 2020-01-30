@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <app-nav></app-nav>
-    <router-view />
+    <template v-if="!defaultLayout">
+      <div class="some class">
+        <router-view />
+      </div>
+    </template>
+    <template v-else>
+      <router-view />
+    </template>
   </div>
 </template>
 
@@ -9,6 +16,15 @@
 import Nav from "./views/layout/Nav.vue";
 
 export default {
+  data() {
+    return {
+      defaultLayout: false
+    };
+  },
+  beforeMount() {
+    // Might use later
+    this.defaultLayout = this.$router.history.current.meta.defaultLayout;
+  },
   components: {
     appNav: Nav
   }

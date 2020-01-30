@@ -18,57 +18,90 @@ const routes = [
   {
     path: "/",
     name: "login",
-    component: Login
+    component: Login,
+    meta: {
+      defaultLayout: true
+    }
   },
   {
     path: "/trips",
     name: "trips",
-    component: Trips
+    component: Trips,
+    meta: {
+      defaultLayout: true
+    }
   },
   {
     path: "/trip",
     name: "trip",
-    component: Trip
+    component: Trip,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/posts",
     name: "posts",
-    component: Posts
+    component: Posts,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/post/:postId",
     name: "post",
-    component: Post
+    component: Post,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/post/:postId/edit",
     name: "post-edit",
-    component: PostEdit
+    component: PostEdit,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/post/create",
     name: "post-create",
-    component: PostCreate
+    component: PostCreate,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/maps",
     name: "maps",
-    component: Maps
+    component: Maps,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/checklist",
     name: "checklist",
-    component: Checklist
+    component: Checklist,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/bucket-list",
     name: "bucketList",
-    component: BucketList
+    component: BucketList,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/budget",
     name: "budget",
-    component: Budget
+    component: Budget,
+    meta: {
+      defaultLayout: false
+    }
   },
   {
     path: "/about",
