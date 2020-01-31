@@ -11,7 +11,10 @@
 
             <div class="button-bar">
               <div class="text-right">
-                <router-link :to="{name: 'post-edit', params: {postId: post.id }}" tag="a">Edit</router-link>
+                <router-link
+                  :to="{name: 'post-edit', params: {postId: post.id, tripId: this.$store.getters.getTrip.id }}"
+                  tag="a"
+                >Edit</router-link>
               </div>
             </div>
 
@@ -45,10 +48,10 @@ export default {
     };
   },
   created() {
-    const post = posts.filter(
+    const post = posts.find(
       post => post.id == this.$router.history.current.params.postId
     );
-    this.post = post[0];
+    this.post = post;
   },
   components: {
     appTabBar: TabBar

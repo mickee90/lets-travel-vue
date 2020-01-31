@@ -38,6 +38,12 @@ export const budgetStore = {
       const remainings = state.budget.remaining - itemsSum;
 
       commit("storeBudget", { ...state.budget, remaining: remainings });
+    },
+    updateBudgetAmount({ commit, state }, newTotalSum) {
+      const itemsSum = state.budgetItems.reduce((acc, item) => acc + item.amount, 0);
+      const remainings = newTotalSum - itemsSum;
+
+      commit("storeBudget", { ...state.budget, remaining: remainings, total_amount: newTotalSum });
     }
   },
   getters: {

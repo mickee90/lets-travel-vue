@@ -13,14 +13,28 @@
 </template>
 
 <script>
+import { capitalizeFirstLetter } from "../../helpers.js";
+
 export default {
-  props: ["item"],
+  props: ["item", "listType"],
+  computed: {
+    getListTypeString() {
+      return capitalizeFirstLetter(this.listType);
+    },
+    getGetterString() {
+      return `get${this.getListTypeString}Items`;
+    },
+    getStoreString() {
+      return `store${this.getListTypeString}Items`;
+    }
+  },
   methods: {
     onDelete(id) {
-      const items = this.$store.getters.getBucketListItems.filter(
+      const items = this.$store.getters[this.getGetterString].filter(
         item => item.id !== id
       );
-      this.$store.dispatch("storeBucketListItems", items);
+
+      this.$store.dispatch(this.getStoreString, items);
     }
   }
 

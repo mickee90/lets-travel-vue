@@ -5,6 +5,7 @@
       :item="item"
       :index="index"
       :key="index"
+      :listType="listType"
     ></app-checkable-list-item>
   </div>
 </template>
@@ -13,7 +14,7 @@
 import CheckableListItem from "./CheckableListItem.vue";
 
 export default {
-  props: ["items"],
+  props: ["items", "listType"],
 
   data() {
     return {

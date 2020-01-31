@@ -5,13 +5,13 @@
   >
     <div class="container content posts">
       <div class="post-body">
-        <form method="POST" action="#" class="col-12">
+        <form class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
               <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
             </div>
             <div class="col pr-0 text-right">
-              <button type="submit" class="btn btn-primary">Create post</button>
+              <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Create post</button>
             </div>
           </div>
 
@@ -22,7 +22,7 @@
               class="form-control title-input"
               name="title"
               placeholder="Title *"
-              :value="post.title"
+              v-model="post.title"
               required
               autocomplete="title"
               autofocus
@@ -38,7 +38,7 @@
                 type="date"
                 class="form-control"
                 name="start_date"
-                :value="post.start_date"
+                v-model="post.start_date"
                 required
               />
             </div>
@@ -49,7 +49,7 @@
                 type="date"
                 class="form-control"
                 name="end_date"
-                :value="post.end_date"
+                v-model="post.end_date"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@
                 class="form-control"
                 name="content"
                 rows="10"
-                :value="post.content"
+                v-model="post.content"
               ></textarea>
             </div>
           </div>
@@ -112,13 +112,30 @@ export default {
   data() {
     return {
       post: {
-        id: null,
         title: null,
         content: null,
         start_date: null,
         end_date: null
       }
     };
+  },
+  methods: {
+    onSubmit() {
+      const newItem = {
+        title: this.post.title.trim(),
+        content: this.content,
+        start_date: this.start_date,
+        end_date: this.end_date === null ? this.start_date : this.end_date
+      };
+
+      if (newItem.title === "") {
+        alert("Title is required");
+        return;
+      }
+
+      this.$store.dispatch("storePost", newItem);
+      this.$router.replace(`/${this.$store.getters.getTrip.id}/posts`);
+    }
   },
   components: {
     appTabBar: TabBar

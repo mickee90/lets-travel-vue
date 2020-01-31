@@ -1,31 +1,35 @@
 <template>
-<div>
+  <div>
     <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            Lets travel
-        </a>
+      <div class="container">
+        <a class="navbar-brand" href="/trips">Lets travel</a>
 
         <button href="#" id="menu-btn" @click="showMenu = !showMenu">
-            USERNAME <span class="navbar-toggler-icon"></span>
+          USERNAME
+          <span class="navbar-toggler-icon"></span>
         </button>
-    </div>
-</header>
-<nav id="nav-container" :class="{show: showMenu}">
-    <div id="backdrop" @click="showMenu = !showMenu">
-
-    </div>
-    <div class="nav">
+      </div>
+    </header>
+    <nav id="nav-container" :class="{show: showMenu}">
+      <div id="backdrop" @click="showMenu = !showMenu"></div>
+      <div class="nav">
         <ul class="navbar-nav ml-auto">
-
           <!--  @guest -->
-                <li><a class="dropdown-item" href="#">Login</a></li>
-               <!--  @if (Route::has('register')) -->
-                    <li><a class="dropdown-item" href="#">Register</a></li>
-               <!--  @endif -->
-           <!--  @endguest -->
-                <li><a class="dropdown-item" href="#">About us </a></li>
-                <li><a class="dropdown-item" href="#">Contact us </a></li>
+          <li>
+            <a class="dropdown-item" href="#">Login</a>
+          </li>
+          <!--  @if (Route::has('register')) -->
+          <li>
+            <a class="dropdown-item" href="#">Register</a>
+          </li>
+          <!--  @endif -->
+          <!--  @endguest -->
+          <li>
+            <a class="dropdown-item" href="#">About us</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Contact us</a>
+          </li>
           <!--    @if(Auth::check())
                     <li><a class="dropdown-item" href="{{ route('profile.edit', Auth::user()) }}">{{ __('Profile') }} </a></li>
                     <li><a class="dropdown-item" href="{{ route('logout') }}"
@@ -38,28 +42,28 @@
                       style="display: none;">
                     @csrf
                 </form></li>
-            @endif -->
+          @endif-->
         </ul>
-    </div>
-</nav>
-</div>
+      </div>
+    </nav>
+  </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       showMenu: false
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>
 #menu-btn {
-    background: transparent;
-    border: 0;
-    outline: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
 }
 #nav-container {
   height: 100%;

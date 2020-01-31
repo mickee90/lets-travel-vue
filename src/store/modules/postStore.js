@@ -5,11 +5,17 @@ export const postStore = {
   mutations: {
     storePosts(state, data) {
       state.posts = data;
+    },
+    addPost(state, data) {
+      state.posts.push(data);
     }
   },
   actions: {
     storePosts({ commit }, data) {
       commit("storePosts", data);
+    },
+    storePost({ commit, state }, data) {
+      commit("addPost", data);
     }
   },
   getters: {

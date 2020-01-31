@@ -9,14 +9,19 @@
 
         <div class="button-bar col-12">
           <div class="text-right">
-            <button onclick="App.ListItems.createItem()">
+            <button @click="addItem = true">
               <i class="fas fa-plus-circle"></i>
             </button>
           </div>
         </div>
 
         <div class="item-list">
-          <app-checkable-list :items="checklistItems"></app-checkable-list>
+          <app-checkable-list-add-item
+            v-if="addItem"
+            @hideInput="addItem = false"
+            listType="checklist"
+          ></app-checkable-list-add-item>
+          <app-checkable-list :items="checklistItems" listType="checklist"></app-checkable-list>
         </div>
         <app-tab-bar></app-tab-bar>
       </div>
@@ -29,8 +34,14 @@
 import TabBar from "../layout/TabBar.vue";
 import { checklistItems } from "../../mock-data/checklist-items";
 import CheckableList from "../../components/Checklists/CheckableList.vue";
+import CheckableListAddItem from "../../components/Checklists/CheckableListAddItem.vue";
 
 export default {
+  data() {
+    return {
+      addItem: false
+    };
+  },
   computed: {
     checklistItems() {
       return this.$store.getters.getChecklistItems;
@@ -41,7 +52,8 @@ export default {
   },
   components: {
     appTabBar: TabBar,
-    appCheckableList: CheckableList
+    appCheckableList: CheckableList,
+    appCheckableListAddItem: CheckableListAddItem
   }
 };
 </script>

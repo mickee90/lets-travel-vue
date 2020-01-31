@@ -24,15 +24,22 @@
 </template>
 
 <script>
+import { capitalizeFirstLetter } from "../../helpers.js";
+
 export default {
+  props: ["listType"],
   data() {
     return {
       itemTitle: ""
     };
   },
-
   methods: {
     store() {
+      const titleListType = capitalizeFirstLetter(this.listType);
+      const getter = `get${titleListType}Items`;
+      const store = `store${titleListType}Items`;
+      const add = `add${titleListType}Items`;
+
       const listItem = this.itemTitle.trim();
 
       if (listItem === "") {
@@ -40,7 +47,9 @@ export default {
         return;
       }
 
-      this.$store.dispatch("addBucketListItems", listItem);
+      console.log(add);
+
+      this.$store.dispatch(add, listItem);
       this.itemTitle = "";
       this.$emit("hideInput");
 

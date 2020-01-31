@@ -11,7 +11,7 @@
       </div>
       <div class="col-md-3">
         <router-link
-          :to="{name: 'trips', params:{tripId: trip.id}}"
+          :to="{name: 'trip', params:{tripId: trip.id}}"
           v-for="trip in trips"
           :key="trip.id"
           tag="a"
@@ -35,23 +35,27 @@ import { trip_images } from "../../mock-data/trip_images";
 export default {
   data() {
     return {
-      trips: [],
       trip_images: []
     };
   },
-  created() {
+  computed: {
+    posts() {
+      return this.$store.getters.getTrips;
+    }
+  },
+  beforeCreate() {
     this.trips = trips.map(trip => {
-      const image = trip_images.filter(
-        image => image.id === trip.trip_image_id
-      );
-      trip.image = image[0];
+      const image = trip_images.find(image => image.id === trip.trip_image_id);
+      trip.image = image;
+
       return trip;
     });
+    this.$store.dispatch("storeTrips", trips);
   },
   methods: {
     imagePath(id) {
-      const image = this.trip_images.filter(image => image.id === id);
-      return image[0].path;
+      const image = this.trip_images.find(image => image.id === id);
+      return image.path;
     }
   },
   components: {

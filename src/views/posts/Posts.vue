@@ -9,7 +9,10 @@
 
         <div class="button-bar col-12">
           <div class="text-right">
-            <router-link :to="{name: 'post-create'}" tag="a">Add new post</router-link>
+            <router-link
+              :to="{name: 'post-create', params: {'tripId' : this.$store.getters.getTrip.id}}"
+              tag="a"
+            >Add new post</router-link>
           </div>
         </div>
 
@@ -40,7 +43,7 @@ import { posts } from "../../mock-data/posts";
 export default {
   computed: {
     posts() {
-      return this.$store.getters.getPosts;
+      return this.$store.getters.getPosts.reverse();
     }
   },
   beforeCreate() {

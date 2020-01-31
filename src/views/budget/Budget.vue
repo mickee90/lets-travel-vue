@@ -19,31 +19,31 @@
           <div class="col-12 d-flex">
             <div class="col-6">Total budget:</div>
 
-            <div id="show-budget-box" class="col-6 row pr-0">
+            <div id="show-budget-box" class="col-6 row pr-0" v-if="!editBudget">
               <div class="col-8 pr-0">
                 {{ budget.currency }}
                 <span id="total_amount">{{ budget.total_amount}}</span>
               </div>
               <div class="text-md-rights col-4">
-                <button onclick="App.Budget.editTotalAmount(this)" data-js="edit-budget-btn">
+                <button @click="editBudget = true" data-js="edit-budget-btn">
                   <i class="fas fa-pen"></i>
                 </button>
               </div>
             </div>
 
-            <div id="edit-budget-box" class="col-6 row pr-0" style="display:none;">
+            <div id="edit-budget-box" class="col-6 row pr-0" v-else>
               <span id="total_amount" class="col-8 pr-0">
                 <input
                   type="text"
                   name="total_amount"
                   id="total_amount_input"
-                  :value="budget.remaining"
+                  v-model="budgetTotalAmount"
                   style="width:100%;"
                   autofocus
                 />
               </span>
               <span class="text-md-rights col-4">
-                <button onclick="App.Budget.updateTotalAmount(this)" data-js="update-budget-btn">
+                <button @click="saveBudget" data-js="update-budget-btn">
                   <i class="fas fa-check"></i>
                 </button>
               </span>
@@ -83,15 +83,22 @@ import BudgetListAddItem from "../../components/Budget/BudgetListAddItem.vue";
 export default {
   data() {
     return {
-      addItem: false
+      addItem: false,
+      editBudget: false,
+      budgetTotalAmount: 0
     };
+  },
+  methods: {
+    saveBudget() {
+      this.$store.dispatch("updateBudgetAmount", this.budgetTotalAmount);
+      this.editBudget = false;
+    }
   },
   computed: {
     budget() {
       return this.$store.getters.getBudget;
     },
     budgetItems() {
-      console.log(this.$store.getters.getBudgetItems);
       return this.$store.getters.getBudgetItems;
     }
   },
@@ -101,6 +108,9 @@ export default {
 
     this.$store.dispatch("storeBudgetItems", budgetItems);
     this.$store.dispatch("storeBudget", { ...budget, remaining: remainings });
+  },
+  mounted() {
+    this.budgetTotalAmount = this.budget.total_amount;
   },
   components: {
     appTabBar: TabBar,
