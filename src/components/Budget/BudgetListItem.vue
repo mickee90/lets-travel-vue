@@ -32,7 +32,7 @@
 
       <div class="col-6 row pl-0">
         <div class="budget-item-delete col-12 m-auto">
-          <button onclick="App.Budget.destroyItem(this)" :data-item_id="item.id">
+          <button @click="onDelete" :data-item_id="item.id">
             <i class="fas fa-trash"></i>
           </button>
         </div>

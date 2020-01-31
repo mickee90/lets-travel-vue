@@ -9,7 +9,7 @@
 
         <div class="button-bar col-12">
           <div class="text-right">
-            <button onclick="App.Budget.createItem()">
+            <button @click="addItem = true">
               <i class="fas fa-plus-circle"></i>
             </button>
           </div>
@@ -59,6 +59,7 @@
         </div>
 
         <div class="item-list">
+          <app-budget-list-add-item v-if="addItem" @hideInput="addItem = false"></app-budget-list-add-item>
           <app-budget-list-item
             v-for="item in budgetItems"
             :item="item"
@@ -77,8 +78,14 @@ import TabBar from "../layout/TabBar.vue";
 import { budget } from "../../mock-data/budget";
 import { budgetItems } from "../../mock-data/budget-items";
 import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
+import BudgetListAddItem from "../../components/Budget/BudgetListAddItem.vue";
 
 export default {
+  data() {
+    return {
+      addItem: false
+    };
+  },
   computed: {
     budget() {
       return this.$store.getters.getBudget;
@@ -97,7 +104,8 @@ export default {
   },
   components: {
     appTabBar: TabBar,
-    appBudgetListItem: BudgetListItem
+    appBudgetListItem: BudgetListItem,
+    appBudgetListAddItem: BudgetListAddItem
   }
 };
 </script>

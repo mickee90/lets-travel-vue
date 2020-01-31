@@ -16,8 +16,8 @@
         </div>
 
         <div class="item-list">
-          <app-checkable-list :items="bucketListItems"></app-checkable-list>
           <app-checkable-list-add-item v-if="addItem" @hideInput="addItem = false"></app-checkable-list-add-item>
+          <app-checkable-list :items="bucketListItems"></app-checkable-list>
         </div>
         <app-tab-bar></app-tab-bar>
       </div>
