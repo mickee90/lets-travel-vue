@@ -2,9 +2,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store/store";
 
-import Login from "../views/Login.vue";
+import Login from "../views/auth/Login.vue";
+import Register from "../views/auth/Register.vue";
 import Trips from "../views/trips/Trips.vue";
 import Trip from "../views/trips/Trip.vue";
+import TripEdit from "../views/trips/TripEdit.vue";
+import TripCreate from "../views/trips/TripCreate.vue";
 import Posts from "../views/posts/Posts.vue";
 import Post from "../views/posts/Post.vue";
 import PostEdit from "../views/posts/PostEdit.vue";
@@ -19,8 +22,23 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    component: Login,
+    meta: {
+      defaultLayout: true
+    }
+  },
+  {
+    path: "/login",
     name: "login",
     component: Login,
+    meta: {
+      defaultLayout: true
+    }
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: Register,
     meta: {
       defaultLayout: true
     }
@@ -31,6 +49,32 @@ const routes = [
     component: Trips,
     meta: {
       defaultLayout: true
+    },
+    beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
+    }
+  },
+  {
+    path: "/trips/create",
+    name: "trips-create",
+    component: TripCreate,
+    meta: {
+      defaultLayout: true
+    },
+    beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
+    }
+  },
+  {
+    path: "/trips/:tripId/edit",
+    name: "trips-edit",
+    component: TripEdit,
+    meta: {
+      defaultLayout: true
+    },
+    beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
+      tripMiddleware(to, from, next);
     }
   },
   {
@@ -39,6 +83,9 @@ const routes = [
     component: Trip,
     meta: {
       defaultLayout: false
+    },
+    beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
     }
   },
   {
@@ -49,6 +96,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -60,6 +108,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -71,6 +120,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -82,6 +132,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -93,6 +144,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -104,6 +156,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -115,6 +168,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -126,6 +180,7 @@ const routes = [
       defaultLayout: false
     },
     beforeEnter(to, from, next) {
+      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -140,12 +195,20 @@ const routes = [
   }
 ];
 
-function tripMiddleware(to, from, next) {
-  if (to.params.tripId) {
-    store.dispatch('setTrip', to.params.tripId);
+function authMiddleware(to, from, next) {
+  if (store.getters.isAuthenticated) {
     next();
   } else {
-    next('/trips')
+    next("/");
+  }
+}
+
+function tripMiddleware(to, from, next) {
+  if (to.params.tripId) {
+    store.dispatch("setTrip", to.params.tripId);
+    next();
+  } else {
+    next("/trips");
   }
 }
 

@@ -1,3 +1,8 @@
+import axios from "../../axios/axios";
+import axiosAuth from "../../axios/axiosAuth";
+
+import router from "../../router/index";
+
 export const authStore = {
   state: {
     idToken: null,
@@ -8,6 +13,9 @@ export const authStore = {
     authUser(state, userData) {
       state.idToken = userData.token;
       state.userId = userData.userId;
+    },
+    setUser(state, user) {
+      state.user = user;
     },
     storeUser(state, user) {
       state.user = user;
@@ -20,40 +28,58 @@ export const authStore = {
   actions: {
     setLogoutTimer({ commit, dispatch }, expirationTime) {
       setTimeout(() => {
-        dispatch('logout')
+        dispatch("logout");
       }, expirationTime * 1000);
     },
-    signup({ commit, dispatch }, payload) {
-      /* axios
-        .post(":signUp?key=AIzaSyBP0-FsmOaNxLVynQgiD-5Vt2w0pc7SrjE", {
-          email: payload.email,
+    register({ commit, dispatch }, payload) {
+      console.log(payload);
+
+      axiosAuth
+        .post(":signUp?key=" + process.env.VUE_APP_FIREBASE_API_KEY, {
+          email: payload.username,
           password: payload.password,
           returnSecureToken: true
         })
         .then(res => {
           console.log(res);
-          commit('authUser', {
+          commit("authUser", {
             token: res.data.idToken,
             userId: res.data.localId
           });
+
           const now = new Date();
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000);
+          const expirationDate = new Date(
+            now.getTime() + res.data.expiresIn * 1000
+          );
 
-          localStorage.setItem('idToken', res.data.idToken);
-          localStorage.setItem('userId', res.data.localId);
-          localStorage.setItem('expirationDate', expirationDate);
+          localStorage.setItem("idToken", res.data.idToken);
+          localStorage.setItem("userId", res.data.localId);
+          localStorage.setItem("expirationDate", expirationDate);
 
-          dispatch('storeUser', authData)
-          dispatch('setLogoutTimer', res.data.expiresIn)
+          const newUser = {
+            userId: res.data.localId,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            username: payload.username
+          };
+          console.log(newUser);
+
+          dispatch("storeUser", newUser);
+          dispatch("setLogoutTimer", res.data.expiresIn);
         })
-        .catch(error => console.log(error)); */
+        .catch(error => {
+          console.log(error);
+          if (error.message === "EMAIL_EXISTS") {
+            alert("The username already exists");
+          }
+        });
     },
     login({ commit, dispatch }, payload) {
-      /* axios
+      axiosAuth
         .post(
-          ":signInWithPassword?key=AIzaSyBP0-FsmOaNxLVynQgiD-5Vt2w0pc7SrjE",
+          ":signInWithPassword?key=" + process.env.VUE_APP_FIREBASE_API_KEY,
           {
-            email: payload.email,
+            email: payload.username,
             password: payload.password,
             returnSecureToken: true
           }
@@ -62,79 +88,85 @@ export const authStore = {
           console.log(res);
 
           const now = new Date();
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000);
+          const expirationDate = new Date(
+            now.getTime() + res.data.expiresIn * 1000
+          );
 
-          localStorage.setItem('idToken', res.data.idToken);
-          localStorage.setItem('userId', res.data.localId);
-          localStorage.setItem('expirationDate', expirationDate);
+          localStorage.setItem("idToken", res.data.idToken);
+          localStorage.setItem("userId", res.data.localId);
+          localStorage.setItem("expirationDate", expirationDate);
 
-          commit('authUser', {
+          commit("authUser", {
             token: res.data.idToken,
             userId: res.data.localId
-          })
-          dispatch('setLogoutTimer', res.data.expiresIn)
-          router.replace('/dashboard')
-        }) */
+          });
+          dispatch("setLogoutTimer", res.data.expiresIn);
+          dispatch("fetchUser", payload);
+          router.replace("/trips");
+        });
     },
     tryAutoLogin({ commit }) {
-      const idToken = localStorage.getItem('idToken');
+      const idToken = localStorage.getItem("idToken");
       if (!idToken) {
         return;
       }
 
-      const expirationDate = localStorage.getItem('expirationDate')
+      const expirationDate = localStorage.getItem("expirationDate");
       const now = new Date();
       if (!expirationDate || now <= expirationDate) {
         return;
       }
 
-      const userId = localStorage.getItem('userId');
-      commit('authUser', {
+      const userId = localStorage.getItem("userId");
+      commit("authUser", {
         token: idToken,
         userId: userId
-      })
+      });
 
-      router.replace('/signin')
+      router.replace("/signin");
     },
     logout({ commit }) {
-      commit('clearAuthData')
+      commit("clearAuthData");
 
-      localStorage.removeItem('idToken');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('expirationDate');
+      localStorage.removeItem("idToken");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("expirationDate");
 
-      router.replace('/signin')
+      router.replace("/login");
     },
-    fetchUser({ commit, state }) {
+    fetchUser({ commit, state }, payload) {
+      console.log("fetchUser ", payload);
+
       if (!state.idToken) {
         return;
       }
-      /* axios
-        .get("/users.json" + '?auth=' + state.idToken)
+      axios
+        .get(
+          `/users.json?auth=${state.idToken}&orderBy="username"&equalTo="${payload.username}"`
+        )
+        .then(res => {
+          const user = res.data[Object.keys(res.data)[0]];
+          console.log(user);
+
+          if (user.username) {
+            commit("setUser", user);
+          }
+        })
+        .catch(error => console.log(error));
+    },
+    storeUser({ commit, state }, payload) {
+      console.log(payload);
+
+      if (!state.idToken) {
+        return;
+      }
+      axios
+        .post("/users.json" + "?auth=" + state.idToken, payload)
         .then(res => {
           console.log(res);
-          const data = res.data;
-
-          const users = [];
-          for (let key in data) {
-            const user = data[key];
-            user.id = key;
-            users.push(user);
-          }
-
-          console.log(users);
-
-          commit('storeUser', users[0])
+          router.replace("/trips");
         })
-        .catch(error => console.log(error)); */
-    },
-    storeUser({ commit, state }, userData) {
-      if (!state.idToken) {
-        return;
-      }
-      /* axios.post('/users.json' + '?auth=' + state.idToken, userData)
-        .then(res => console.log(res))
-        .catch(error => console.log(error)) */
+        .catch(error => console.log(error));
     }
   },
   getters: {

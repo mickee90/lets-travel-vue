@@ -5,44 +5,51 @@
         <a class="navbar-brand" href="/trips">Lets travel</a>
 
         <button href="#" id="menu-btn" @click="showMenu = !showMenu">
-          USERNAME
+          <span v-if="isAuth">
+            {{ this.$store.getters.user.username }}
+          </span>
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
     </header>
-    <nav id="nav-container" :class="{show: showMenu}">
+    <nav id="nav-container" :class="{ show: showMenu }">
       <div id="backdrop" @click="showMenu = !showMenu"></div>
       <div class="nav">
         <ul class="navbar-nav ml-auto">
-          <!--  @guest -->
-          <li>
-            <a class="dropdown-item" href="#">Login</a>
+          <li v-if="!isAuth">
+            <router-link tag="a" class="dropdown-item menu-item" to="/"
+              >Login</router-link
+            >
           </li>
-          <!--  @if (Route::has('register')) -->
-          <li>
-            <a class="dropdown-item" href="#">Register</a>
+          <li v-if="!isAuth">
+            <router-link
+              class="dropdown-item menu-item"
+              :to="{ name: 'register' }"
+              tag="a"
+              @click="showMenu = false"
+              >Register</router-link
+            >
           </li>
-          <!--  @endif -->
-          <!--  @endguest -->
           <li>
-            <a class="dropdown-item" href="#">About us</a>
+            <router-link tag="a" class="dropdown-item menu-item" to="#"
+              >About us</router-link
+            >
           </li>
           <li>
-            <a class="dropdown-item" href="#">Contact us</a>
+            <router-link tag="a" class="dropdown-item menu-item" to="#"
+              >Contact us</router-link
+            >
           </li>
-          <!--    @if(Auth::check())
-                    <li><a class="dropdown-item" href="{{ route('profile.edit', Auth::user()) }}">{{ __('Profile') }} </a></li>
-                    <li><a class="dropdown-item" href="{{ route('logout') }}"
-                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                      style="display: none;">
-                    @csrf
-                </form></li>
-          @endif-->
+          <li v-if="isAuth">
+            <router-link tag="a" class="dropdown-item menu-item" to="#"
+              >Profile
+            </router-link>
+          </li>
+          <li v-if="isAuth">
+            <a class="dropdown-item menu-item" @click="onLogout">
+              Logout
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -55,6 +62,21 @@ export default {
     return {
       showMenu: false
     };
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch("logout");
+    }
+  },
+  computed: {
+    isAuth() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  mounted() {
+    document.querySelectorAll(".menu-item").forEach(menuItem => {
+      menuItem.addEventListener("click", () => (this.showMenu = false));
+    });
   }
 };
 </script>
