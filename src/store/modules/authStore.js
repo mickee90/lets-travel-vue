@@ -174,7 +174,11 @@ export const authStore = {
       return state.user;
     },
     isAuthenticated(state) {
-      return state.idToken !== null;
+      return localStorage.getItem("idToken") !== null;
+      //return state.idToken !== null;
+    },
+    idToken(state) {
+      return state.idToken;
     }
   }
 };

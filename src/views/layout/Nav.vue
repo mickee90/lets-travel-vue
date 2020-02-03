@@ -5,9 +5,7 @@
         <a class="navbar-brand" href="/trips">Lets travel</a>
 
         <button href="#" id="menu-btn" @click="showMenu = !showMenu">
-          <span v-if="isAuth">
-            {{ this.$store.getters.user.username }}
-          </span>
+          <span v-if="isAuth">{{ username }}</span>
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
@@ -17,9 +15,7 @@
       <div class="nav">
         <ul class="navbar-nav ml-auto">
           <li v-if="!isAuth">
-            <router-link tag="a" class="dropdown-item menu-item" to="/"
-              >Login</router-link
-            >
+            <router-link tag="a" class="dropdown-item menu-item" to="/">Login</router-link>
           </li>
           <li v-if="!isAuth">
             <router-link
@@ -27,28 +23,19 @@
               :to="{ name: 'register' }"
               tag="a"
               @click="showMenu = false"
-              >Register</router-link
-            >
+            >Register</router-link>
           </li>
           <li>
-            <router-link tag="a" class="dropdown-item menu-item" to="#"
-              >About us</router-link
-            >
+            <router-link tag="a" class="dropdown-item menu-item" to="#">About us</router-link>
           </li>
           <li>
-            <router-link tag="a" class="dropdown-item menu-item" to="#"
-              >Contact us</router-link
-            >
+            <router-link tag="a" class="dropdown-item menu-item" to="#">Contact us</router-link>
           </li>
           <li v-if="isAuth">
-            <router-link tag="a" class="dropdown-item menu-item" to="#"
-              >Profile
-            </router-link>
+            <router-link tag="a" class="dropdown-item menu-item" to="#">Profile</router-link>
           </li>
           <li v-if="isAuth">
-            <a class="dropdown-item menu-item" @click="onLogout">
-              Logout
-            </a>
+            <a class="dropdown-item menu-item" @click="onLogout">Logout</a>
           </li>
         </ul>
       </div>
@@ -71,6 +58,11 @@ export default {
   computed: {
     isAuth() {
       return this.$store.getters.isAuthenticated;
+    },
+    username() {
+      return this.$store.getters.user !== null
+        ? this.$store.getters.user.username
+        : "";
     }
   },
   mounted() {

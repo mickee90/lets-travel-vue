@@ -1,3 +1,6 @@
+import axios from '../../axios/axios';
+import store from '../../store/store'
+
 export const tripStore = {
   state: {
     trips: [
@@ -54,7 +57,29 @@ export const tripStore = {
     storeTrips({ commit }, data) {
       commit("storeTrips", data);
     },
-    storeTrip({ commit }, data) {
+    storeTrip({ commit, state }, payload) {
+      console.log(payload);
+      const idToken = store.getters.idToken;
+
+      if (!idToken) {
+        return;
+      }
+
+      axios
+        .post("/trips.json" + "?auth=" + state.idToken, payload)
+        .then(res => {
+          const trip = res.data;
+          console.log(res, trip);
+
+          const trips = state.trips;
+          trips.push(trip);
+
+          commit('storeTrips', trips);
+
+          router.replace(`/trip/${trip.id}`);
+        })
+        .catch(error => console.log(error));
+
       commit("storeTrip", data);
     },
     setTrip({ commit, state }, tripId) {
