@@ -39,27 +39,23 @@ import { trip_images } from "../../mock-data/trip_images";
 export default {
   data() {
     return {
-      trip_images: []
+      trip_images: [],
+      trips: []
     };
   },
-  computed: {
-    posts() {
-      return this.$store.getters.getTrips;
-    }
-  },
-  beforeCreate() {
-    this.trips = trips.map(trip => {
-      const image = trip_images.find(image => image.id === trip.trip_image_id);
-      trip.image = image;
-
-      return trip;
-    });
-    this.$store.dispatch("storeTrips", trips);
+  beforeMount() {
+    this.fetchTrips();
   },
   methods: {
     imagePath(id) {
       const image = this.trip_images.find(image => image.id === id);
       return image.path;
+    },
+    async fetchTrips() {
+      await this.$store.dispatch("fetchTrips");
+      console.log(this.$store.getters.getTrips);
+      this.trips = this.$store.getters.getTrips;
+      console.log("temp", this.trips[0]);
     }
   },
   components: {
