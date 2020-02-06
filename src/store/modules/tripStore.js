@@ -31,66 +31,53 @@ export const tripStore = {
     storeTrips({ commit }, data) {
       commit("storeTrips", data);
     },
-    async fetchTrips({ commit }) {
+
+    async fetchTrips({ commit, dispatch }) {
       const idToken = localStorage.getItem("idToken");
       const userId = localStorage.getItem("userId");
-      console.log(idToken, userId);
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
         return;
       }
 
-      /* trip_images.forEach(image => {
-        axios
-          .post("/tripImages.json" + "?auth=" + idToken, image)
-          .then(res => {
-            console.log(res);
-          })
-          .catch(error => console.log(error));
-      }); */
-
-      return axios
+      return await axios
         .get("/trips.json" + "?auth=" + idToken)
         .then(res => {
-          console.log(res);
+          const trips = Object.keys(res.data);
 
-          /* const fuctionWithPromise = item => {
-            return Promise.resolve("ok");
-          };
-
-          const anAsyncFunction = async item => {
-            return functionWithPromise(item);
-          };
-
-          const getData = async () => {
+          const updateTripImages = trips => {
             return Promise.all(
-              Object.keys(res.data).map(item => anAsyncFunction(item))
+              trips.map(async trip => {
+                const image = await dispatch(
+                  "fetchTripImage",
+                  res.data[trip].imageId
+                );
+
+                return { ...res.data[trip], id: trip, image: image };
+              })
             );
           };
 
-          getData().then(data => {
-            console.log(data);
-          }); */
+          const newTrips = updateTripImages(trips).then(newTrips => {
+            commit("storeTrips", newTrips);
 
-          const trips = Object.keys(res.data).map(trip => {
-            const image = await dispatch('fetchTripImage', trip.imageId);
-            return { ...res.data[trip], id: trip };
+            return newTrips;
           });
 
-          console.log(trips);
-
-          commit("storeTrips", trips);
+          return newTrips;
         })
         .catch(error => console.log(error));
     },
+
     async fetchTripImage({ commit, state }, tripImageId) {
+      const idToken = localStorage.getItem("idToken");
       return axios
         .get(
-          `/tripImages.json?auth=${idToken}&orderBy="id"&equalTo="${tripImageId}"`
+          `/tripImages.json?auth=${idToken}&orderBy="$key"&startAt="${tripImageId}"&limitToFirst=1`
         )
         .then(res => {
-          console.log(res);
+          /* console.log(res.data); */
 
           return res.data;
         })
@@ -99,7 +86,7 @@ export const tripStore = {
     storeTrip({ commit, state }, payload) {
       const idToken = localStorage.getItem("idToken");
       const userId = localStorage.getItem("userId");
-      console.log(payload, idToken, userId);
+      /* console.log(payload, idToken, userId); */
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");

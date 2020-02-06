@@ -18,11 +18,7 @@
         >
           <div class="card">
             <!-- @todo make dynamic! -->
-            <img
-              src="@/assets/imgs/trips/soccer.jpg"
-              :alt="trip.image.title"
-              class="card-img"
-            />
+            <img src="@/assets/imgs/trips/soccer.jpg" :alt="trip.image.title" class="card-img" />
             <div class="trip-footer">{{ trip.title }}</div>
           </div>
         </router-link>
@@ -43,8 +39,10 @@ export default {
       trips: []
     };
   },
-  beforeMount() {
-    this.fetchTrips();
+  created() {
+    this.fetchTrips().then(res => {
+      this.trips = this.$store.getters.getTrips;
+    });
   },
   methods: {
     imagePath(id) {
@@ -53,9 +51,6 @@ export default {
     },
     async fetchTrips() {
       await this.$store.dispatch("fetchTrips");
-      console.log(this.$store.getters.getTrips);
-      this.trips = this.$store.getters.getTrips;
-      console.log("temp", this.trips[0]);
     }
   },
   components: {
