@@ -3,12 +3,12 @@ import axiosAuth from "../../axios/axiosAuth";
 
 import router from "../../router/index";
 
+const getInitState = () => {
+  return { idToken: null, userId: null, user: null };
+};
+
 export const authStore = {
-  state: {
-    idToken: null,
-    userId: null,
-    user: null
-  },
+  state: getInitState(),
   mutations: {
     authUser(state, userData) {
       state.idToken = userData.token;
@@ -20,9 +20,8 @@ export const authStore = {
     storeUser(state, user) {
       state.user = user;
     },
-    clearAuthData(state) {
-      state.idToken = null;
-      state.userId = null;
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {
@@ -32,8 +31,6 @@ export const authStore = {
       }, expirationTime * 1000);
     },
     register({ commit, dispatch }, payload) {
-      console.log(payload);
-
       axiosAuth
         .post(":signUp?key=" + process.env.VUE_APP_FIREBASE_API_KEY, {
           email: payload.username,
@@ -41,20 +38,16 @@ export const authStore = {
           returnSecureToken: true
         })
         .then(res => {
-          console.log(res);
-          commit("authUser", {
-            token: res.data.idToken,
-            userId: res.data.localId
-          });
-
           const now = new Date();
           const expirationDate = new Date(
             now.getTime() + res.data.expiresIn * 1000
           );
 
-          localStorage.setItem("idToken", res.data.idToken);
-          localStorage.setItem("userId", res.data.localId);
-          localStorage.setItem("expirationDate", expirationDate);
+          commit("authUser", {
+            token: res.data.idToken,
+            userId: res.data.localId,
+            expirationDate
+          });
 
           const newUser = {
             userId: res.data.localId,
@@ -62,7 +55,6 @@ export const authStore = {
             lastName: payload.lastName,
             username: payload.username
           };
-          console.log(newUser);
 
           dispatch("storeUser", newUser);
           dispatch("setLogoutTimer", res.data.expiresIn);
@@ -85,39 +77,35 @@ export const authStore = {
           }
         )
         .then(res => {
-          console.log(res);
-
           const now = new Date();
           const expirationDate = new Date(
             now.getTime() + res.data.expiresIn * 1000
           );
 
-          localStorage.setItem("idToken", res.data.idToken);
-          localStorage.setItem("userId", res.data.localId);
-          localStorage.setItem("expirationDate", expirationDate);
-
           commit("authUser", {
             token: res.data.idToken,
-            userId: res.data.localId
+            userId: res.data.localId,
+            expirationDate
           });
           dispatch("setLogoutTimer", res.data.expiresIn);
           dispatch("fetchUser", payload);
+          dispatch("fetchTripImages");
           router.replace("/trips");
         });
     },
-    tryAutoLogin({ commit }) {
-      const idToken = localStorage.getItem("idToken");
+    tryAutoLogin({ commit, state }) {
+      const idToken = state.idToken;
       if (!idToken) {
         return;
       }
 
-      const expirationDate = localStorage.getItem("expirationDate");
+      const expirationDate = state.expirationDate;
       const now = new Date();
       if (!expirationDate || now <= expirationDate) {
         return;
       }
 
-      const userId = localStorage.getItem("userId");
+      const userId = state.userId;
       commit("authUser", {
         token: idToken,
         userId: userId
@@ -125,18 +113,11 @@ export const authStore = {
 
       router.replace("/signin");
     },
-    logout({ commit }) {
-      commit("clearAuthData");
-
-      localStorage.removeItem("idToken");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("expirationDate");
-
+    logout({ commit, dispatch }) {
+      dispatch("resetAllStates");
       router.replace("/login");
     },
     fetchUser({ commit, state }, payload) {
-      console.log("fetchUser ", payload);
-
       if (!state.idToken) {
         return;
       }
@@ -146,8 +127,6 @@ export const authStore = {
         )
         .then(res => {
           const user = res.data[Object.keys(res.data)[0]];
-          console.log(user);
-
           if (user.username) {
             commit("setUser", user);
           }
@@ -155,15 +134,12 @@ export const authStore = {
         .catch(error => console.log(error));
     },
     storeUser({ commit, state }, payload) {
-      console.log(payload);
-
       if (!state.idToken) {
         return;
       }
       axios
         .post("/users.json" + "?auth=" + state.idToken, payload)
         .then(res => {
-          console.log(res);
           router.replace("/trips");
         })
         .catch(error => console.log(error));
@@ -174,11 +150,17 @@ export const authStore = {
       return state.user;
     },
     isAuthenticated(state) {
-      return localStorage.getItem("idToken") !== null;
+      return state.idToken !== null;
       //return state.idToken !== null;
     },
     idToken(state) {
       return state.idToken;
+    },
+    userId(state) {
+      return state.userId;
+    },
+    expirationDate(state) {
+      return state.expirationDate;
     }
   }
 };

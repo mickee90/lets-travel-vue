@@ -24,7 +24,8 @@ const routes = [
     path: "/",
     component: Login,
     meta: {
-      defaultLayout: true
+      defaultLayout: true,
+      guest: true
     }
   },
   {
@@ -32,7 +33,8 @@ const routes = [
     name: "login",
     component: Login,
     meta: {
-      defaultLayout: true
+      defaultLayout: true,
+      guest: true
     }
   },
   {
@@ -40,7 +42,8 @@ const routes = [
     name: "register",
     component: Register,
     meta: {
-      defaultLayout: true
+      defaultLayout: true,
+      guest: true
     }
   },
   {
@@ -48,32 +51,28 @@ const routes = [
     name: "trips",
     component: Trips,
     meta: {
-      defaultLayout: true
-    },
-    beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
+      defaultLayout: true,
+      requiresAuth: true
     }
   },
   {
     path: "/trips/create",
-    name: "trips-create",
+    name: "trip-create",
     component: TripCreate,
     meta: {
-      defaultLayout: true
-    },
-    beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
+      defaultLayout: true,
+      requiresAuth: true
     }
   },
   {
     path: "/trips/:tripId/edit",
-    name: "trips-edit",
+    name: "trip-edit",
     component: TripEdit,
     meta: {
-      defaultLayout: true
+      defaultLayout: true,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -82,10 +81,11 @@ const routes = [
     name: "trip",
     component: Trip,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
+      tripMiddleware(to, from, next);
     }
   },
   {
@@ -93,10 +93,10 @@ const routes = [
     name: "posts",
     component: Posts,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -105,10 +105,10 @@ const routes = [
     name: "post",
     component: Post,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -117,10 +117,10 @@ const routes = [
     name: "post-edit",
     component: PostEdit,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -129,10 +129,10 @@ const routes = [
     name: "post-create",
     component: PostCreate,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -141,10 +141,10 @@ const routes = [
     name: "maps",
     component: Maps,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -153,10 +153,10 @@ const routes = [
     name: "checklist",
     component: Checklist,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -165,10 +165,10 @@ const routes = [
     name: "bucketList",
     component: BucketList,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
   },
@@ -177,21 +177,12 @@ const routes = [
     name: "budget",
     component: Budget,
     meta: {
-      defaultLayout: false
+      defaultLayout: false,
+      requiresAuth: true
     },
     beforeEnter(to, from, next) {
-      authMiddleware(to, from, next);
       tripMiddleware(to, from, next);
     }
-  },
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
   }
 ];
 
@@ -216,6 +207,19 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.idToken == null) {
+      next({
+        path: "/login",
+        params: { nextUrl: to.fullPath }
+      });
+    }
+  }
+
+  next();
 });
 
 export default router;

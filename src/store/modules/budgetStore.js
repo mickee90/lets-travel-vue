@@ -1,8 +1,9 @@
+const getInitState = () => {
+  return { budgetItems: [], budget: null };
+};
+
 export const budgetStore = {
-  state: {
-    budgetItems: [],
-    budget: null
-  },
+  state: getInitState(),
   mutations: {
     storeBudgetItems(state, data) {
       state.budgetItems = data;
@@ -12,6 +13,9 @@ export const budgetStore = {
     },
     addBudgetListItems(state, data) {
       state.budgetItems.unshift(data);
+    },
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {
@@ -34,16 +38,26 @@ export const budgetStore = {
 
       commit("addBudgetListItems", item);
 
-      const itemsSum = state.budgetItems.reduce((acc, item) => acc + item.amount, 0);
+      const itemsSum = state.budgetItems.reduce(
+        (acc, item) => acc + item.amount,
+        0
+      );
       const remainings = state.budget.remaining - itemsSum;
 
       commit("storeBudget", { ...state.budget, remaining: remainings });
     },
     updateBudgetAmount({ commit, state }, newTotalSum) {
-      const itemsSum = state.budgetItems.reduce((acc, item) => acc + item.amount, 0);
+      const itemsSum = state.budgetItems.reduce(
+        (acc, item) => acc + item.amount,
+        0
+      );
       const remainings = newTotalSum - itemsSum;
 
-      commit("storeBudget", { ...state.budget, remaining: remainings, total_amount: newTotalSum });
+      commit("storeBudget", {
+        ...state.budget,
+        remaining: remainings,
+        total_amount: newTotalSum
+      });
     }
   },
   getters: {

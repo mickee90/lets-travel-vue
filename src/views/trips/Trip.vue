@@ -11,7 +11,9 @@
 
             <div class="button-bar">
               <div class="text-right">
-                <a href="#">Edit</a>
+                <router-link
+                  :to="{name: 'trip-edit', params: {'tripId': this.$store.getters.getTrip.id}}"
+                >Edit</router-link>
               </div>
             </div>
 

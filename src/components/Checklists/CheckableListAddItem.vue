@@ -47,8 +47,6 @@ export default {
         return;
       }
 
-      console.log(add);
-
       this.$store.dispatch(add, listItem);
       this.itemTitle = "";
       this.$emit("hideInput");

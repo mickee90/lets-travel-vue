@@ -1,13 +1,18 @@
+const getInitState = () => {
+  return { bucketListItems: [] };
+};
+
 export const bucketListStore = {
-  state: {
-    bucketListItems: []
-  },
+  state: getInitState(),
   mutations: {
     storeBucketListItems(state, data) {
       state.bucketListItems = data;
     },
     addBucketListItems(state, data) {
       state.bucketListItems.push(data);
+    },
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {

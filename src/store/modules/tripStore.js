@@ -3,19 +3,12 @@ import store from "../../store/store";
 import router from "../../router/index";
 import { trip_images } from "../../mock-data/trip_images";
 
+const getInitState = () => {
+  return { trips: [], trip: {}, tripImages: [] };
+};
+
 export const tripStore = {
-  state: {
-    trips: [],
-    trip: {
-      id: 1,
-      user_id: 1,
-      title: "Trip title #1",
-      description: "Some description about trip #1",
-      trip_image_id: 1,
-      start_date: "2020-03-01",
-      end_date: "2020-03-01"
-    }
-  },
+  state: getInitState(),
   mutations: {
     storeTrips(state, data) {
       state.trips = data;
@@ -23,8 +16,14 @@ export const tripStore = {
     storeTrip(state, data) {
       state.trip = data;
     },
+    storeTripImages(state, data) {
+      state.tripImages = data;
+    },
     setTrip(state, data) {
       state.trip = data;
+    },
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {
@@ -32,9 +31,9 @@ export const tripStore = {
       commit("storeTrips", data);
     },
 
-    async fetchTrips({ commit, dispatch }) {
-      const idToken = localStorage.getItem("idToken");
-      const userId = localStorage.getItem("userId");
+    async fetchTrips({ commit, dispatch, state, getters }) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -70,23 +69,35 @@ export const tripStore = {
         .catch(error => console.log(error));
     },
 
-    async fetchTripImage({ commit, state }, tripImageId) {
-      const idToken = localStorage.getItem("idToken");
+    async fetchTripImage({ commit, state, getters }, tripImageId) {
+      const idToken = getters.idToken;
       return axios
         .get(
           `/tripImages.json?auth=${idToken}&orderBy="$key"&startAt="${tripImageId}"&limitToFirst=1`
         )
         .then(res => {
-          /* console.log(res.data); */
-
           return res.data;
         })
         .catch(error => console.log(error));
     },
-    storeTrip({ commit, state }, payload) {
-      const idToken = localStorage.getItem("idToken");
-      const userId = localStorage.getItem("userId");
-      /* console.log(payload, idToken, userId); */
+    fetchTripImages({ commit, getters }) {
+      const idToken = getters.idToken;
+      axios
+        .get(`/tripImages.json?auth=${idToken}`)
+        .then(res => {
+          const tempImages = res.data;
+
+          const images = Object.keys(tempImages).map(imageId => {
+            return { ...tempImages[imageId], id: imageId };
+          });
+
+          commit("storeTripImages", images);
+        })
+        .catch(error => console.log(error));
+    },
+    storeTrip({ commit, state, getters }, payload) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -99,8 +110,6 @@ export const tripStore = {
         .post("/trips.json" + "?auth=" + idToken, newTrip)
         .then(res => {
           const trip = res.data;
-          console.log(res, trip);
-
           const trips = state.trips;
           trips.push(trip);
 
@@ -111,7 +120,7 @@ export const tripStore = {
         .catch(error => console.log(error));
     },
     setTrip({ commit, state }, tripId) {
-      const trip = state.trips.find(item => item.id === parseFloat(tripId));
+      const trip = state.trips.find(item => item.id === tripId);
       commit("setTrip", trip);
     }
   },
@@ -121,6 +130,9 @@ export const tripStore = {
     },
     getTrip(state) {
       return state.trip;
+    },
+    getTripImages(state) {
+      return state.tripImages;
     }
   }
 };

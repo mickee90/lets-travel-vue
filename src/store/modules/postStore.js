@@ -1,13 +1,18 @@
+const getInitState = () => {
+  return { posts: [] };
+};
+
 export const postStore = {
-  state: {
-    posts: []
-  },
+  state: getInitState(),
   mutations: {
     storePosts(state, data) {
       state.posts = data;
     },
     addPost(state, data) {
       state.posts.push(data);
+    },
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {

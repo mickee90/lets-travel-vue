@@ -8,7 +8,9 @@
         <form class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
-              <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
+              <button onclick="history.back()" class="btn btn-secondary">
+                Cancel
+              </button>
             </div>
             <div class="col pr-0 text-right">
               <button type="submit" class="btn btn-primary">Update</button>
@@ -91,10 +93,16 @@
                 onclick="searchMarker();return false;"
                 class="btn btn-primary"
                 style="border-radius:0;"
-              >Search</button>
+              >
+                Search
+              </button>
             </div>
 
-            <ul id="search-result-list" class="form-group row hide" style="padding:0;"></ul>
+            <ul
+              id="search-result-list"
+              class="form-group row hide"
+              style="padding:0;"
+            ></ul>
             <div id="map-dummy" class="col-12" style="height: 0;"></div>
           </div>
         </form>
@@ -119,7 +127,6 @@ export default {
       post => post.id == this.$router.history.current.params.postId
     );
     this.post = post;
-    console.log(this.post);
   },
   components: {
     appTabBar: TabBar
@@ -127,5 +134,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

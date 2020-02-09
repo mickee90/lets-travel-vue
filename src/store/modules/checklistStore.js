@@ -1,13 +1,18 @@
+const getInitState = () => {
+  return { checklistItems: [] };
+};
+
 export const checklistStore = {
-  state: {
-    checklistItems: []
-  },
+  state: getInitState(),
   mutations: {
     storeChecklistItems(state, data) {
       state.checklistItems = data;
     },
     addChecklistItems(state, data) {
       state.checklistItems.push(data);
+    },
+    resetState(state) {
+      Object.assign(state, getInitState());
     }
   },
   actions: {
@@ -26,7 +31,7 @@ export const checklistStore = {
       };
 
       commit("addChecklistItems", item);
-    },
+    }
   },
   getters: {
     getChecklistItems(state) {
