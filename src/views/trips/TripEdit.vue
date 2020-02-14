@@ -97,7 +97,7 @@
             </div>
 
             <div class="form-group trip-row">
-              <div
+              <!-- <div
                 class="form-group col-md-4 trip-image"
                 v-for="tripImage in tripImages"
                 :key="tripImage.id"
@@ -109,9 +109,8 @@
                     v-model="tripImage.id"
                   />
                   <img :src="getImage(tripImage.path)" :alt="tripImage.title" />
-                  <!-- <img :src="getImage(tripImage.path)" :alt="tripImage.title" /> -->
                 </label>
-              </div>
+              </div> -->
             </div>
           </form>
         </div>
@@ -122,6 +121,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 import TabBar from "../layout/TabBar.vue";
 
 export default {
@@ -132,8 +132,8 @@ export default {
       title: "",
       description: "",
       imageId: 0,
-      startDate: "2020-03-01",
-      endDate: "2020-03-01",
+      startDate: "",
+      endDate: "",
       tripImages: []
     };
   },
@@ -142,14 +142,36 @@ export default {
       return require(path);
     },
     onSubmit() {
-      console.log(
-        this.title,
-        this.startDate,
-        this.endDate,
-        this.description,
-        this.imageId,
-        this.tripImages
-      );
+      this.$v.$touch();
+
+      if (this.$v.title.$error) {
+        alert("The title is required");
+        return;
+      }
+
+      if (this.$v.startDate.$error) {
+        alert("The start date is required");
+        return;
+      }
+
+      const newTrip = {
+        id: this.id,
+        title: this.title,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        description: this.description,
+        imageId: this.imageId
+      };
+
+      this.$store.dispatch("editTrip", newTrip);
+    }
+  },
+  validations: {
+    title: {
+      required
+    },
+    startDate: {
+      required
     }
   },
   created() {

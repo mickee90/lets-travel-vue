@@ -95,6 +95,32 @@ export const tripStore = {
         })
         .catch(error => console.log(error));
     },
+    editTrip({ commit, state, getters }, payload) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
+
+      if (!idToken || !userId) {
+        alert("Hmm, something is missing. Try again!");
+        return;
+      }
+
+      const newTrip = { ...payload };
+
+      axios
+        .put(`/trips/${payload.id}.json?auth=${idToken}`, newTrip)
+        .then(res => {
+          const trip = res.data;
+          const trips = [...state.trips].map(item =>
+            item.id !== newTrip.id ? item : { ...item, ...newTrip }
+          );
+
+          commit("storeTrips", trips);
+          commit("storeTrip", newTrip);
+
+          router.replace(`/trip/${trip.id}`);
+        })
+        .catch(error => console.log(error));
+    },
     storeTrip({ commit, state, getters }, payload) {
       const idToken = getters.idToken;
       const userId = getters.userId;
