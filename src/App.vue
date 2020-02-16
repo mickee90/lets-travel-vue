@@ -3,11 +3,11 @@
     <app-nav></app-nav>
     <template v-if="!defaultLayout">
       <div class="some class">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </div>
     </template>
     <template v-else>
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </template>
   </div>
 </template>
@@ -21,9 +21,8 @@ export default {
       defaultLayout: false
     };
   },
-  beforeMount() {
-    // Might use later
-    this.defaultLayout = this.$router.history.current.meta.defaultLayout;
+  created() {
+    this.$store.dispatch("tryAutoLogin");
   },
   components: {
     appNav: Nav

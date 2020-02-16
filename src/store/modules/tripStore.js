@@ -40,33 +40,33 @@ export const tripStore = {
         return;
       }
 
-      return await axios
+      const response = await axios
         .get("/trips.json" + "?auth=" + idToken)
-        .then(res => {
-          const trips = Object.keys(res.data);
-
-          const updateTripImages = trips => {
-            return Promise.all(
-              trips.map(async trip => {
-                const image = await dispatch(
-                  "fetchTripImage",
-                  res.data[trip].imageId
-                );
-
-                return { ...res.data[trip], id: trip, image: image };
-              })
-            );
-          };
-
-          const newTrips = updateTripImages(trips).then(newTrips => {
-            commit("storeTrips", newTrips);
-
-            return newTrips;
-          });
-
-          return newTrips;
-        })
+        .then(res => res)
         .catch(error => console.log(error));
+
+      const trips = Object.keys(response);
+
+      const updateTripImages = trips => {
+        return Promise.all(
+          trips.map(async trip => {
+            const image = await dispatch(
+              "fetchTripImage",
+              response[trip].imageId
+            );
+
+            return { ...response[trip], id: trip, image: image };
+          })
+        );
+      };
+
+      const newTrips = updateTripImages(trips).then(newTrips => {
+        commit("storeTrips", newTrips);
+
+        return newTrips;
+      });
+
+      return newTrips;
     },
 
     async fetchTripImage({ commit, state, getters }, tripImageId) {
@@ -75,25 +75,21 @@ export const tripStore = {
         .get(
           `/tripImages.json?auth=${idToken}&orderBy="$key"&startAt="${tripImageId}"&limitToFirst=1`
         )
-        .then(res => {
-          return res.data;
-        })
+        .then(res => res)
         .catch(error => console.log(error));
     },
     fetchTripImages({ commit, getters }) {
       const idToken = getters.idToken;
-      axios
+      const tempImages = axios
         .get(`/tripImages.json?auth=${idToken}`)
-        .then(res => {
-          const tempImages = res.data;
-
-          const images = Object.keys(tempImages).map(imageId => {
-            return { ...tempImages[imageId], id: imageId };
-          });
-
-          commit("storeTripImages", images);
-        })
+        .then(res => res)
         .catch(error => console.log(error));
+
+      const images = Object.keys(tempImages).map(imageId => {
+        return { ...tempImages[imageId], id: imageId };
+      });
+
+      commit("storeTripImages", images);
     },
     editTrip({ commit, state, getters }, payload) {
       const idToken = getters.idToken;
@@ -106,20 +102,19 @@ export const tripStore = {
 
       const newTrip = { ...payload };
 
-      axios
+      const trip = axios
         .put(`/trips/${payload.id}.json?auth=${idToken}`, newTrip)
-        .then(res => {
-          const trip = res.data;
-          const trips = [...state.trips].map(item =>
-            item.id !== newTrip.id ? item : { ...item, ...newTrip }
-          );
-
-          commit("storeTrips", trips);
-          commit("storeTrip", newTrip);
-
-          router.replace(`/trip/${trip.id}`);
-        })
+        .then(res => res)
         .catch(error => console.log(error));
+
+      const trips = [...state.trips].map(item =>
+        item.id !== newTrip.id ? item : { ...item, ...newTrip }
+      );
+
+      commit("storeTrips", trips);
+      commit("storeTrip", newTrip);
+
+      router.replace(`/trip/${trip.id}`);
     },
     storeTrip({ commit, state, getters }, payload) {
       const idToken = getters.idToken;
@@ -132,18 +127,17 @@ export const tripStore = {
 
       const newTrip = { ...payload, userId };
 
-      axios
+      const trip = axios
         .post("/trips.json" + "?auth=" + idToken, newTrip)
-        .then(res => {
-          const trip = res.data;
-          const trips = state.trips;
-          trips.push(trip);
-
-          commit("storeTrips", trips);
-
-          router.replace(`/trip/${trip.id}`);
-        })
+        .then(res => res)
         .catch(error => console.log(error));
+
+      const trips = state.trips;
+      trips.push(trip);
+
+      commit("storeTrips", trips);
+
+      router.replace(`/trip/${trip.id}`);
     },
     setTrip({ commit, state }, tripId) {
       const trip = state.trips.find(item => item.id === tripId);

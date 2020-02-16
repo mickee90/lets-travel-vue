@@ -8,10 +8,18 @@
         <form class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
-              <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
+              <button onclick="history.back()" class="btn btn-secondary">
+                Cancel
+              </button>
             </div>
             <div class="col pr-0 text-right">
-              <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Create post</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                @click.prevent="onSubmit"
+              >
+                Create post
+              </button>
             </div>
           </div>
 
@@ -22,7 +30,7 @@
               class="form-control title-input"
               name="title"
               placeholder="Title *"
-              v-model="post.title"
+              v-model="title"
               required
               autocomplete="title"
               autofocus
@@ -31,25 +39,25 @@
 
           <div class="form-group trip-row">
             <div class="col-md-6">
-              <label for="start_date">Start date *</label>
+              <label for="startDate">Start date *</label>
 
               <input
-                id="start_date"
+                id="startDate"
                 type="date"
                 class="form-control"
-                name="start_date"
-                v-model="post.start_date"
+                name="startDate"
+                v-model="startDate"
                 required
               />
             </div>
             <div class="col-md-6">
-              <label for="end_date">End Date</label>
+              <label for="endDate">End Date</label>
               <input
-                id="end_date"
+                id="endDate"
                 type="date"
                 class="form-control"
-                name="end_date"
-                v-model="post.end_date"
+                name="endDate"
+                v-model="endDate"
               />
             </div>
           </div>
@@ -63,7 +71,7 @@
                 class="form-control"
                 name="content"
                 rows="10"
-                v-model="post.content"
+                v-model="content"
               ></textarea>
             </div>
           </div>
@@ -92,10 +100,16 @@
                 onclick="searchMarker();return false;"
                 class="btn btn-primary"
                 style="border-radius:0;"
-              >Search</button>
+              >
+                Search
+              </button>
             </div>
 
-            <ul id="search-result-list" class="form-group row hide" style="padding:0;"></ul>
+            <ul
+              id="search-result-list"
+              class="form-group row hide"
+              style="padding:0;"
+            ></ul>
             <div id="map-dummy" class="col-12" style="height: 0;"></div>
           </div>
         </form>
@@ -111,21 +125,22 @@ import TabBar from "../layout/TabBar.vue";
 export default {
   data() {
     return {
-      post: {
-        title: null,
-        content: null,
-        start_date: null,
-        end_date: null
-      }
+      title: null,
+      content: null,
+      startDate: null,
+      endDate: null
     };
   },
   methods: {
     onSubmit() {
+      const tripId = this.$store.getters.getTrip.id;
+
       const newItem = {
-        title: this.post.title.trim(),
+        title: this.title.trim(),
         content: this.content,
-        start_date: this.start_date,
-        end_date: this.end_date === null ? this.start_date : this.end_date
+        startDate: this.startDate,
+        endDate: this.endDate === null ? this.startDate : this.endDate,
+        tripId
       };
 
       if (newItem.title === "") {
@@ -133,8 +148,8 @@ export default {
         return;
       }
 
-      this.$store.dispatch("storePost", newItem);
-      this.$router.replace(`/${this.$store.getters.getTrip.id}/posts`);
+      this.$store.dispatch("createPost", newItem);
+      this.$router.replace(`/${tripId}/posts`);
     }
   },
   components: {
@@ -143,5 +158,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

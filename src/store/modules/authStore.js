@@ -4,15 +4,16 @@ import axiosAuth from "../../axios/axiosAuth";
 import router from "../../router/index";
 
 const getInitState = () => {
-  return { idToken: null, userId: null, user: null };
+  return { idToken: null, userId: null, expirationDate: null, user: null };
 };
 
 export const authStore = {
   state: getInitState(),
   mutations: {
     authUser(state, userData) {
-      state.idToken = userData.token;
+      state.idToken = userData.idToken;
       state.userId = userData.userId;
+      state.expirationDate = userData.expirationDate;
     },
     setUser(state, user) {
       state.user = user;
@@ -44,7 +45,7 @@ export const authStore = {
           );
 
           commit("authUser", {
-            token: res.data.idToken,
+            idToken: res.data.idToken,
             userId: res.data.localId,
             expirationDate
           });
@@ -83,7 +84,7 @@ export const authStore = {
           );
 
           commit("authUser", {
-            token: res.data.idToken,
+            idToken: res.data.idToken,
             userId: res.data.localId,
             expirationDate
           });
@@ -107,11 +108,12 @@ export const authStore = {
 
       const userId = state.userId;
       commit("authUser", {
-        token: idToken,
-        userId: userId
+        idToken: idToken,
+        userId: userId,
+        expirationDate
       });
 
-      router.replace("/signin");
+      /* router.replace("/login"); */
     },
     logout({ commit, dispatch }) {
       dispatch("resetAllStates");
