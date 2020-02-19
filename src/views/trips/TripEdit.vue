@@ -115,14 +115,13 @@
           </form>
         </div>
       </div>
-      <app-tab-bar></app-tab-bar>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import TabBar from "../layout/TabBar.vue";
 
 export default {
   data() {
@@ -185,9 +184,6 @@ export default {
     this.startDate = trip.startDate;
     this.endDate = trip.endDate;
     this.tripImages = tripImages;
-  },
-  components: {
-    appTabBar: TabBar
   }
 };
 </script>

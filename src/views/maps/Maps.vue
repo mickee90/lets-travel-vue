@@ -28,7 +28,9 @@
               onclick="searchMarker();return false;"
               class="btn btn-primary"
               style="border-radius:0;margin-bottom: 20px;line-height:2.1;font-size:1rem;"
-            >Search</button>
+            >
+              Search
+            </button>
           </div>
 
           <ul id="search-result-list" class="row hide" style="padding:0;"></ul>
@@ -58,7 +60,9 @@
               id="google-maps-submit"
               class="btn btn-primary"
               name="google-maps-submit"
-            >Add</button>
+            >
+              Add
+            </button>
           </div>
         </div>
 
@@ -67,7 +71,7 @@
           <div id="map-dummy" class="col-12" style="height: 0;"></div>
         </div>
 
-        <app-tab-bar></app-tab-bar>
+        <tab-bar></tab-bar>
       </div>
     </div>
   </div>
@@ -76,12 +80,7 @@
 <script>
 import TabBar from "../layout/TabBar.vue";
 
-export default {
-  components: {
-    appTabBar: TabBar
-  }
-};
+export default {};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

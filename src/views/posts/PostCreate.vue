@@ -114,14 +114,12 @@
           </div>
         </form>
       </div>
-      <app-tab-bar></app-tab-bar>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
-
 export default {
   data() {
     return {
@@ -151,9 +149,6 @@ export default {
       this.$store.dispatch("createPost", newItem);
       this.$router.replace(`/${tripId}/posts`);
     }
-  },
-  components: {
-    appTabBar: TabBar
   }
 };
 </script>

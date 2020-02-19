@@ -21,16 +21,18 @@
             @hideInput="addItem = false"
             listType="bucketList"
           ></app-checkable-list-add-item>
-          <app-checkable-list :items="bucketListItems" listType="bucketList"></app-checkable-list>
+          <app-checkable-list
+            :items="bucketListItems"
+            listType="bucketList"
+          ></app-checkable-list>
         </div>
-        <app-tab-bar></app-tab-bar>
+        <tab-bar></tab-bar>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
 import { bucketListItems } from "../../mock-data/bucket-list-items";
 import CheckableList from "../../components/Checklists/CheckableList.vue";
 import CheckableListAddItem from "../../components/Checklists/CheckableListAddItem.vue";
@@ -50,12 +52,10 @@ export default {
     this.$store.dispatch("storeBucketListItems", bucketListItems);
   },
   components: {
-    appTabBar: TabBar,
     appCheckableList: CheckableList,
     appCheckableListAddItem: CheckableListAddItem
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -5,7 +5,7 @@
   >
     <div class="container content posts item-view">
       <div class="post-body">
-        <div class="title-input col-12">Checklist</div>
+        <div class="title-input col-12">{{ trip.title }} - Checklist</div>
 
         <div class="button-bar col-12">
           <div class="text-right">
@@ -16,47 +16,47 @@
         </div>
 
         <div class="item-list">
-          <app-checkable-list-add-item
+          <CheckableListAddItem
             v-if="addItem"
             @hideInput="addItem = false"
             listType="checklist"
-          ></app-checkable-list-add-item>
-          <app-checkable-list :items="checklistItems" listType="checklist"></app-checkable-list>
+          ></CheckableListAddItem>
+
+          <CheckableListItem
+            v-for="(item, index) in checklistItems"
+            :item="item"
+            :index="index"
+            :key="index"
+            listType="checklist"
+          ></CheckableListItem>
         </div>
-        <app-tab-bar></app-tab-bar>
+        <tab-bar></tab-bar>
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import TabBar from "../layout/TabBar.vue";
-import { checklistItems } from "../../mock-data/checklist-items";
-import CheckableList from "../../components/Checklists/CheckableList.vue";
+import CheckableListItem from "../../components/Checklists/CheckableListItem.vue";
 import CheckableListAddItem from "../../components/Checklists/CheckableListAddItem.vue";
 
 export default {
   data() {
     return {
-      addItem: false
+      checklistItems: [],
+      addItem: false,
+      trip: {}
     };
   },
-  computed: {
-    checklistItems() {
-      return this.$store.getters.getChecklistItems;
-    }
-  },
-  beforeCreate() {
-    this.$store.dispatch("storeChecklistItems", checklistItems);
+  created() {
+    this.checklistItems = this.$store.getters.getChecklistItems;
+    this.trip = this.$store.getters.getTrip;
   },
   components: {
-    appTabBar: TabBar,
-    appCheckableList: CheckableList,
-    appCheckableListAddItem: CheckableListAddItem
+    CheckableListItem,
+    CheckableListAddItem
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

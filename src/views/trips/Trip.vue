@@ -34,14 +34,12 @@
           </div>
         </div>
       </div>
-      <app-tab-bar></app-tab-bar>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
-
 export default {
   data() {
     return {
@@ -50,9 +48,6 @@ export default {
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-  },
-  components: {
-    appTabBar: TabBar
   }
 };
 </script>

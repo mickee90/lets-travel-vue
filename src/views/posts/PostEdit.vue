@@ -13,7 +13,13 @@
               </button>
             </div>
             <div class="col pr-0 text-right">
-              <button type="submit" class="btn btn-primary">Update</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                @click.prevent="onSubmit"
+              >
+                Update
+              </button>
             </div>
           </div>
 
@@ -24,7 +30,7 @@
               class="form-control title-input"
               name="title"
               placeholder="Title *"
-              :value="post.title"
+              v-model="title"
               autocomplete="title"
               autofocus
             />
@@ -39,7 +45,7 @@
                 type="date"
                 class="form-control"
                 name="start_date"
-                :value="post.start_date"
+                v-model="startDate"
                 required
               />
             </div>
@@ -50,7 +56,7 @@
                 type="date"
                 class="form-control"
                 name="end_date"
-                :value="post.end_date"
+                v-model="endDate"
               />
             </div>
           </div>
@@ -64,7 +70,7 @@
                 class="form-control"
                 name="content"
                 rows="10"
-                :value="post.content"
+                v-model="content"
               ></textarea>
             </div>
           </div>
@@ -107,29 +113,58 @@
           </div>
         </form>
       </div>
-      <app-tab-bar></app-tab-bar>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
-import { posts } from "../../mock-data/posts";
-
 export default {
   data() {
     return {
-      post: {}
+      id: null,
+      title: "",
+      tripId: null,
+      startDate: "",
+      endDate: "",
+      content: "",
+      lat: "",
+      lng: ""
     };
   },
+  methods: {
+    async onSubmit(e) {
+      e.preventDefault();
+
+      const editedPost = {
+        id: this.id,
+        title: this.title,
+        tripId: this.tripId,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        content: this.content,
+        lat: this.lat,
+        lng: this.lng
+      };
+
+      const update = await this.$store.dispatch("editPost", editedPost);
+    }
+  },
   created() {
-    const post = posts.find(
+    const post = this.$store.getters.getPosts.find(
       post => post.id == this.$router.history.current.params.postId
     );
-    this.post = post;
-  },
-  components: {
-    appTabBar: TabBar
+    this.post = { ...this.post, ...post };
+
+    this.id = post.id;
+    this.title = post.title;
+    this.tripId = post.tripId;
+    this.startDate = post.startDate;
+    this.endDate = post.endDate;
+    this.content = post.content;
+    this.lat = post.lat;
+    this.lng = post.lng;
+    this.trip = this.$store.getters.getTrip;
   }
 };
 </script>

@@ -1,4 +1,5 @@
 import axios from "../../axios/axios";
+import router from "../../router/index";
 
 const getInitState = () => {
   return { posts: [] };
@@ -60,6 +61,28 @@ export const postStore = {
         .catch(error => console.log(error));
 
       commit("addPost", response.data);
+    },
+    async editPost({ state, commit, getters }, updatedPost) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
+
+      if (!idToken || !userId) {
+        alert("Hmm, something is missing. Try again!");
+        return;
+      }
+
+      const post = await axios
+        .put(`/posts/${updatedPost.id}.json?auth=${idToken}`, updatedPost)
+        .then(res => res.data)
+        .catch(error => console.log(error));
+
+      const posts = [...state.posts].map(item =>
+        item.id !== updatedPost.id ? item : { ...item, ...updatedPost }
+      );
+
+      commit("storePosts", posts);
+
+      router.replace(`/${post.tripId}/post/${post.id}`);
     }
   },
   getters: {

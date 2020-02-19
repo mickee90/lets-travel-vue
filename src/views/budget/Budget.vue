@@ -22,7 +22,7 @@
             <div id="show-budget-box" class="col-6 row pr-0" v-if="!editBudget">
               <div class="col-8 pr-0">
                 {{ budget.currency }}
-                <span id="total_amount">{{ budget.total_amount}}</span>
+                <span id="total_amount">{{ budget.total_amount }}</span>
               </div>
               <div class="text-md-rights col-4">
                 <button @click="editBudget = true" data-js="edit-budget-btn">
@@ -59,7 +59,10 @@
         </div>
 
         <div class="item-list">
-          <app-budget-list-add-item v-if="addItem" @hideInput="addItem = false"></app-budget-list-add-item>
+          <app-budget-list-add-item
+            v-if="addItem"
+            @hideInput="addItem = false"
+          ></app-budget-list-add-item>
           <app-budget-list-item
             v-for="item in budgetItems"
             :item="item"
@@ -67,14 +70,13 @@
             :budget="budget"
           ></app-budget-list-item>
         </div>
-        <app-tab-bar></app-tab-bar>
+        <tab-bar></tab-bar>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
 import { budget } from "../../mock-data/budget";
 import { budgetItems } from "../../mock-data/budget-items";
 import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
@@ -113,12 +115,10 @@ export default {
     this.budgetTotalAmount = this.budget.total_amount;
   },
   components: {
-    appTabBar: TabBar,
     appBudgetListItem: BudgetListItem,
     appBudgetListAddItem: BudgetListAddItem
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

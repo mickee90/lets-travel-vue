@@ -114,14 +114,13 @@
           </form>
         </div>
       </div>
-      <app-tab-bar></app-tab-bar>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import TabBar from "../layout/TabBar.vue";
 
 export default {
   data() {
@@ -165,9 +164,6 @@ export default {
     startDate: {
       required
     }
-  },
-  components: {
-    appTabBar: TabBar
   }
 };
 </script>

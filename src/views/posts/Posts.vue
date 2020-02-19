@@ -5,7 +5,7 @@
   >
     <div class="container content posts">
       <div class="post-body">
-        <div class="title-input col-12">Trip #1</div>
+        <div class="title-input col-12">{{ trip.title }} - Posts</div>
 
         <div class="button-bar col-12">
           <div class="text-right">
@@ -34,19 +34,18 @@
           </div>
         </router-link>
 
-        <app-tab-bar></app-tab-bar>
+        <tab-bar></tab-bar>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
-
 export default {
   data() {
     return {
-      posts: []
+      posts: [],
+      trip: {}
     };
   },
   created() {
@@ -55,9 +54,7 @@ export default {
       .then(res => {
         this.posts = res;
       });
-  },
-  components: {
-    appTabBar: TabBar
+    this.trip = this.$store.getters.getTrip;
   }
 };
 </script>

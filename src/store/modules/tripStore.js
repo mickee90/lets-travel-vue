@@ -45,17 +45,19 @@ export const tripStore = {
         .then(res => res)
         .catch(error => console.log(error));
 
-      const trips = Object.keys(response);
+      if (response === null || response === undefined) {
+        return [];
+      }
+
+      const data = response.data;
+      const trips = Object.keys(data);
 
       const updateTripImages = trips => {
         return Promise.all(
           trips.map(async trip => {
-            const image = await dispatch(
-              "fetchTripImage",
-              response[trip].imageId
-            );
+            const image = await dispatch("fetchTripImage", data[trip].imageId);
 
-            return { ...response[trip], id: trip, image: image };
+            return { ...data[trip], id: trip, image: image };
           })
         );
       };

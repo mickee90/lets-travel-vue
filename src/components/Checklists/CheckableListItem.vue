@@ -1,5 +1,9 @@
 <template>
-  <div class="col-12 post" :class="{'completed': item.completed}" :key="item.id">
+  <div
+    class="col-12 post"
+    :class="{ completed: item.completed }"
+    :key="item.id"
+  >
     <div class="list-item-title col-8 pl-2 pr-0" v-text="item.title"></div>
     <div class="list-item-check col-2 pr-0">
       <input type="checkbox" v-model="item.completed" />
@@ -30,6 +34,7 @@ export default {
   },
   methods: {
     onDelete(id) {
+      console.log(id);
       const items = this.$store.getters[this.getGetterString].filter(
         item => item.id !== id
       );

@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import TabBar from "../layout/TabBar.vue";
 import Spinner from "../../components/UI/Spinner";
 
 export default {
@@ -48,6 +47,7 @@ export default {
   created() {
     this.fetchTrips().then(res => {
       this.trips = this.$store.getters.getTrips.reverse();
+      console.log(this.trips);
     });
   },
   methods: {
@@ -60,7 +60,6 @@ export default {
     }
   },
   components: {
-    appTabBar: TabBar,
     spinner: Spinner
   }
 };
