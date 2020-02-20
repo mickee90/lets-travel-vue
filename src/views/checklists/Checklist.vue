@@ -28,6 +28,7 @@
             :index="index"
             :key="index"
             listType="checklist"
+            @deleteItem="onDeleteItem"
           ></CheckableListItem>
         </div>
         <tab-bar></tab-bar>
@@ -43,14 +44,24 @@ import CheckableListAddItem from "../../components/Checklists/CheckableListAddIt
 export default {
   data() {
     return {
-      checklistItems: [],
       addItem: false,
       trip: {}
     };
   },
+  computed: {
+    checklistItems() {
+      return this.$store.getters.getChecklistItems;
+    }
+  },
+  methods: {
+    onDeleteItem(id) {
+      this.$store.dispatch("deleteChecklistItem", id);
+    }
+  },
   created() {
-    this.checklistItems = this.$store.getters.getChecklistItems;
     this.trip = this.$store.getters.getTrip;
+    console.log(this.$store.getters.getTrip, this.trip);
+    this.$store.dispatch("fetchChecklistItems", this.trip.id);
   },
   components: {
     CheckableListItem,

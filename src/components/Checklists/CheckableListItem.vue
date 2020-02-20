@@ -8,6 +8,7 @@
     <div class="list-item-check col-2 pr-0">
       <input type="checkbox" v-model="item.completed" />
     </div>
+    <input type="hidden" :value="item.id" />
     <div class="list-item-delete col-2 pr-0 pl-2">
       <button @click="onDelete(item.id)">
         <i class="fas fa-trash"></i>
@@ -34,12 +35,13 @@ export default {
   },
   methods: {
     onDelete(id) {
-      console.log(id);
+      this.$emit("deleteItem", id);
+      /* console.log(id);
       const items = this.$store.getters[this.getGetterString].filter(
         item => item.id !== id
       );
 
-      this.$store.dispatch(this.getStoreString, items);
+      this.$store.dispatch(this.getStoreString, items); */
     }
   }
 

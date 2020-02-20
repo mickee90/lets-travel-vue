@@ -11,7 +11,7 @@
       />
     </div>
     <div class="list-item-check col-2 pr-0 pl-0" style="font-size: 1.5rem;">
-      <button @click="store">
+      <button @click="onSave">
         <i class="fas fa-check"></i>
       </button>
     </div>
@@ -34,12 +34,7 @@ export default {
     };
   },
   methods: {
-    store() {
-      const titleListType = capitalizeFirstLetter(this.listType);
-      const getter = `get${titleListType}Items`;
-      const store = `store${titleListType}Items`;
-      const add = `add${titleListType}Items`;
-
+    onSave() {
       const listItem = this.itemTitle.trim();
 
       if (listItem === "") {
@@ -47,20 +42,11 @@ export default {
         return;
       }
 
-      this.$store.dispatch(add, listItem);
+      const titleListType = capitalizeFirstLetter(this.listType);
+
+      this.$store.dispatch(`create${titleListType}Items`, listItem);
       this.itemTitle = "";
       this.$emit("hideInput");
-
-      /* axios
-        .post(window.location.pathname, { title: listItem })
-        .then(response => {
-          console.log(response.data);
-          this.$emit("added", response.data);
-          this.$emit("itemAdded");
-        })
-        .catch(error => {
-          alert(error.response.data.message);
-        }); */
     },
     cancel() {
       this.itemTitle = "";
