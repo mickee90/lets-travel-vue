@@ -16,16 +16,22 @@
         </div>
 
         <div class="item-list">
-          <app-checkable-list-add-item
+          <CheckableListAddItem
             v-if="addItem"
             @hideInput="addItem = false"
-            listType="bucketList"
-          ></app-checkable-list-add-item>
-          <app-checkable-list
-            :items="bucketListItems"
-            listType="bucketList"
-          ></app-checkable-list>
+            listType="bucketlist"
+          ></CheckableListAddItem>
+
+          <CheckableListItem
+            v-for="(item, index) in bucketlistItems"
+            :item="item"
+            :index="index"
+            :key="index"
+            listType="bucketlist"
+            @deleteItem="onDeleteItem"
+          ></CheckableListItem>
         </div>
+
         <tab-bar></tab-bar>
       </div>
     </div>
@@ -33,27 +39,29 @@
 </template>
 
 <script>
-import { bucketListItems } from "../../mock-data/bucket-list-items";
-import CheckableList from "../../components/Checklists/CheckableList.vue";
+import CheckableListItem from "../../components/Checklists/CheckableListItem";
 import CheckableListAddItem from "../../components/Checklists/CheckableListAddItem.vue";
 
 export default {
   data() {
     return {
-      addItem: false
+      addItem: false,
+      trip: {}
     };
   },
   computed: {
-    bucketListItems() {
-      return this.$store.getters.getBucketListItems;
+    bucketlistItems() {
+      console.log(this.$store.getters.getBucketlistItems);
+      return this.$store.getters.getBucketlistItems;
     }
   },
-  beforeCreate() {
-    this.$store.dispatch("storeBucketListItems", bucketListItems);
+  created() {
+    this.trip = this.$store.getters.getTrip;
+    this.$store.dispatch("fetchBucketlistItems", this.trip.id);
   },
   components: {
-    appCheckableList: CheckableList,
-    appCheckableListAddItem: CheckableListAddItem
+    CheckableListItem,
+    CheckableListAddItem
   }
 };
 </script>

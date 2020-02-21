@@ -31,42 +31,15 @@ export default {
     },
     getStoreString() {
       return `store${this.getListTypeString}Items`;
+    },
+    getDeleteString() {
+      return `delete${this.getListTypeString}Item`;
     }
   },
   methods: {
     onDelete(id) {
-      this.$emit("deleteItem", id);
-      /* console.log(id);
-      const items = this.$store.getters[this.getGetterString].filter(
-        item => item.id !== id
-      );
-
-      this.$store.dispatch(this.getStoreString, items); */
+      this.$store.dispatch(this.getDeleteString, id);
     }
   }
-
-  /* methods: {
-    toggle() {
-      axios
-        .patch(window.location.pathname + "/" + this.item.id, {
-          completed: !this.completed
-        })
-        .then(({ data }) => {
-          this.completed = data.completed;
-        })
-        .catch(error => {
-          alert(error.response.data.message);
-        });
-    },
-
-    destroy() {
-      axios
-        .delete(window.location.pathname + "/" + this.item.id)
-        .then(this.$emit("deleted", this.index))
-        .catch(error => {
-          alert(error.response.data.message);
-        });
-    }
-  } */
 };
 </script>

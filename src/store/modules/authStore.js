@@ -140,7 +140,7 @@ export const authStore = {
         return;
       }
       axios
-        .post("/users.json" + "?auth=" + state.idToken, payload)
+        .post(`/users.json?auth=${state.idToken}`, payload)
         .then(res => {
           router.replace("/trips");
         })

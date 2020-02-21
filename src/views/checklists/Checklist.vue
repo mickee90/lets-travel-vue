@@ -53,14 +53,8 @@ export default {
       return this.$store.getters.getChecklistItems;
     }
   },
-  methods: {
-    onDeleteItem(id) {
-      this.$store.dispatch("deleteChecklistItem", id);
-    }
-  },
   created() {
     this.trip = this.$store.getters.getTrip;
-    console.log(this.$store.getters.getTrip, this.trip);
     this.$store.dispatch("fetchChecklistItems", this.trip.id);
   },
   components: {

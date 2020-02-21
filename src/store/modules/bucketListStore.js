@@ -1,40 +1,112 @@
+import axios from "../../axios/axios";
+import router from "../../router/index";
+
 const getInitState = () => {
-  return { bucketListItems: [] };
+  return { bucketlistItems: [] };
 };
 
 export const bucketListStore = {
   state: getInitState(),
   mutations: {
-    storeBucketListItems(state, data) {
-      state.bucketListItems = data;
+    storeBucketlistItems(state, data) {
+      state.bucketlistItems = data;
     },
-    addBucketListItems(state, data) {
-      state.bucketListItems.push(data);
+    addBucketlistItems(state, data) {
+      state.bucketlistItems.push(data);
+    },
+    updateBucketlistItems(state, index, data) {
+      state.bucketlistItems.$set(index, data);
+    },
+    deleteBucketlistItem(state, index) {
+      state.bucketlistItems.splice(index, 1);
     },
     resetState(state) {
       Object.assign(state, getInitState());
     }
   },
   actions: {
-    storeBucketListItems({ commit }, data) {
-      commit("storeBucketListItems", data);
+    storeBucketlistItems({ commit }, data) {
+      commit("storeBucketlistItems", data);
     },
-    addBucketListItems({ commit, state }, title) {
-      const lastItem = state.bucketListItems[state.bucketListItems.length - 1];
-      const item = {
-        id: lastItem.id++,
-        trip_id: 1,
+    async fetchBucketlistItems({ commit, getters }, tripId) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
+
+      if (!idToken || !userId) {
+        alert("Hmm, something is missing. Try again!");
+        return;
+      }
+
+      const response = await axios
+        .get(
+          `/bucketlists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+        )
+        .then(res => res)
+        .catch(error => console.log(error));
+
+      const tempItems = response.data;
+      /* console.log(res, tempItems); */
+
+      const items = Object.keys(tempItems).map(bucketlistId => {
+        return { ...tempItems[bucketlistId], id: bucketlistId };
+      });
+
+      commit("storeBucketlistItems", items);
+    },
+    async createBucketlistItems({ commit, state, dispatch, getters }, title) {
+      /* const { idToken, userId } = dispatch("validateAuth");
+      console.log(idToken, userId); */
+
+      const idToken = getters.idToken;
+      const userId = getters.userId;
+
+      if (!idToken || !userId) {
+        alert("Hmm, something is missing. Try again!");
+        return;
+      }
+
+      const lastItem = state.bucketlistItems[state.bucketlistItems.length - 1];
+
+      const newItem = {
+        tripId: getters.getTrip.id,
+        order: lastItem ? lastItem.order++ : 1,
         title: title,
-        order: lastItem.order++,
         completed: false,
-        completed_at: ""
+        completed_at: new Date().toISOString().split("T")[0]
       };
-      commit("addBucketListItems", item);
+
+      await axios
+        .post(`/bucketlists.json?auth=${idToken}`, newItem)
+        .then(res => {
+          commit("addBucketlistItems", { ...newItem, id: res.data.name });
+        })
+        .catch(error => console.log(error));
+    },
+    async deleteBucketlistItem({ commit, getters }, id) {
+      const idToken = getters.idToken;
+      const userId = getters.userId;
+
+      if (!idToken || !userId) {
+        alert("Hmm, something is missing. Try again!");
+        return;
+      }
+      const response = await axios
+        .delete(`/bucketlists/${id}.json?auth=${idToken}`)
+        .then(res => res.data)
+        .catch(error => console.log(error));
+
+      console.log(response);
+
+      const index = getters.getBucketlistItems.findIndex(
+        item => item.id === id
+      );
+
+      commit("deleteBucketlistItem", index);
     }
   },
   getters: {
-    getBucketListItems(state) {
-      return state.bucketListItems;
+    getBucketlistItems(state) {
+      return state.bucketlistItems;
     }
   }
 };
