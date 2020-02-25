@@ -22,7 +22,7 @@
             <div id="show-budget-box" class="col-6 row pr-0" v-if="!editBudget">
               <div class="col-8 pr-0">
                 {{ budget.currency }}
-                <span id="total_amount">{{ budget.total_amount }}</span>
+                <span id="total_amount">{{ budget.amount }}</span>
               </div>
               <div class="text-md-rights col-4">
                 <button @click="editBudget = true" data-js="edit-budget-btn">
@@ -37,7 +37,7 @@
                   type="text"
                   name="total_amount"
                   id="total_amount_input"
-                  v-model="budgetTotalAmount"
+                  v-model="budget.amount"
                   style="width:100%;"
                   autofocus
                 />
@@ -53,7 +53,7 @@
             <div class="col-6">Remaining:</div>
             <div class="col-6">
               {{ budget.currency }}
-              <span id="remainings">{{ budget.remaining }}</span>
+              <span id="remainings">{{ remaining }}</span>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@
             @hideInput="addItem = false"
           ></app-budget-list-add-item>
           <app-budget-list-item
-            v-for="item in budgetItems"
+            v-for="item in budget.items"
             :item="item"
             :key="item.id"
             :budget="budget"
@@ -77,8 +77,6 @@
 </template>
 
 <script>
-import { budget } from "../../mock-data/budget";
-import { budgetItems } from "../../mock-data/budget-items";
 import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
 import BudgetListAddItem from "../../components/Budget/BudgetListAddItem.vue";
 
@@ -87,15 +85,31 @@ export default {
     return {
       addItem: false,
       editBudget: false,
-      budgetTotalAmount: 0
+      budget: 0,
+      trip: {},
+      budget: {
+        id: null,
+        amount: 0,
+        items: [],
+        tripId: null,
+        currency: "$"
+      },
+      remaining: 0
     };
+  },
+  created() {
+    this.trip = this.$store.getters.getTrip;
+    this.$store.dispatch("fetchBudget", this.trip.id);
+    this.budget = this.$store.getters.getBudget;
+    console.log(this.budget);
   },
   methods: {
     saveBudget() {
-      this.$store.dispatch("updateBudgetAmount", this.budgetTotalAmount);
+      this.$store.dispatch("updateBudgetAmount", this.budget.amount);
       this.editBudget = false;
     }
   },
+  /*
   computed: {
     budget() {
       return this.$store.getters.getBudget;
@@ -113,7 +127,7 @@ export default {
   },
   mounted() {
     this.budgetTotalAmount = this.budget.total_amount;
-  },
+  }, */
   components: {
     appBudgetListItem: BudgetListItem,
     appBudgetListAddItem: BudgetListAddItem
