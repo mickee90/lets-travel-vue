@@ -13,11 +13,11 @@
       </div>
       <div class="budget-item-date col-12">
         <input
-          id="start_date"
+          id="startDate"
           type="date"
           class="form-control item-input"
-          name="start_date"
-          v-model="item.start_date"
+          name="startDate"
+          v-model="item.startDate"
           required
         />
       </div>
@@ -57,7 +57,7 @@ export default {
     return {
       item: {
         title: "",
-        start_date: new Date().toISOString().split("T")[0],
+        startDate: new Date().toISOString().split("T")[0],
         amount: 0
       }
     };
@@ -66,11 +66,11 @@ export default {
     store() {
       const newItem = {
         title: this.item.title.trim(),
-        start_date: this.item.start_date.trim(),
+        startDate: this.item.startDate.trim(),
         amount: parseFloat(this.item.amount)
       };
 
-      if (newItem.title === "" || newItem.start_date === "") {
+      if (newItem.title === "" || newItem.startDate === "") {
         alert("The input and date cannot be empty");
         return;
       }
@@ -80,9 +80,9 @@ export default {
         return;
       }
 
-      this.$store.dispatch("addBudgetListItem", newItem);
+      this.$store.dispatch("budget/addBudgetListItem", newItem);
       this.resetItem();
-      this.$emit("hideInput");
+      this.$emit("itemAdded");
 
       /* axios
         .post(window.location.pathname, { title: listItem })
@@ -102,7 +102,7 @@ export default {
     resetItem() {
       this.item = {
         title: "",
-        start_date: new Date().toISOString().split("T")[0],
+        startDate: new Date().toISOString().split("T")[0],
         amount: 0
       };
     }

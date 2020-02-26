@@ -15,6 +15,7 @@ const getInitState = () => {
 };
 
 export const budgetStore = {
+  namespaced: true,
   state: getInitState(),
   mutations: {
     storeBudgetItems(state, data) {
@@ -27,7 +28,11 @@ export const budgetStore = {
       state.budget = { ...data };
     },
     addBudgetListItems(state, data) {
-      state.budget.items.unshift(data);
+      if (state.budget.items === undefined) {
+        state.budget.items = [data];
+      } else {
+        state.budget.items.unshift(data);
+      }
     },
     resetState(state) {
       Object.assign(state, getInitState());
@@ -37,9 +42,9 @@ export const budgetStore = {
     storeBudget({ commit }, data) {
       commit("storeBudget", data);
     },
-    async fetchBudget({ commit, getters, dispatch }, tripId) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async fetchBudget({ commit, getters, dispatch, rootGetters }, tripId) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -58,7 +63,7 @@ export const budgetStore = {
       if (Object.keys(budget).length === 0) {
         dispatch("initBudget", { ...getInitState().budget, tripId });
       } else {
-        commit("storeBudget", budget);
+        commit("storeBudget", { ...budget[Object.keys(budget)[0]] });
       }
     },
     /*  async updateBudget({ commit, getters, dispatch }, tripId) {
@@ -85,9 +90,9 @@ export const budgetStore = {
         commit("storeBudget", budget);
       }
     }, */
-    async initBudget({ commit, getters, dispatch }, data) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async initBudget({ commit, getters, dispatch, rootGetters }, data) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -98,39 +103,40 @@ export const budgetStore = {
         .post(`/budgets.json?auth=${idToken}`, data)
         .then(res => {
           commit("storeBudget", { ...data, id: res.data.name });
-          dispatch("updateBudgetId");
+          dispatch("updateBudget");
         })
         .catch(error => console.log(error));
     },
 
-    /* addBudgetListItem({ commit, state }, data) {
-      const lastItem = state.budgetItems[state.budgetItems.length - 1];
+    addBudgetListItem({ commit, state, getters, dispatch }, data) {
       const item = {
-        id: lastItem.id++,
         budget_id: 1,
         title: data.title,
         amount: data.amount,
-        start_date: data.start_date,
-        end_date: data.start_date
+        startDate: data.startDate,
+        endDate: data.startDate
       };
 
       commit("addBudgetListItems", item);
 
-      const itemsSum = state.budgetItems.reduce(
+      const itemsSum = getters.getBudgetItems.reduce(
         (acc, item) => acc + item.amount,
         0
       );
-      const remainings = state.budget.remaining - itemsSum;
+      const remainings = getters.getBudgetAmount - itemsSum;
 
-      commit("storeBudget", { ...state.budget, remaining: remainings });
-    }, */
+      commit("storeBudget", { ...getters.getBudget, remaining: remainings });
+      dispatch("updateBudget");
+    },
 
     // Ugly temporary solution to set the id as a property
-    async updateBudgetId({ getters }) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async updateBudget({ getters, rootGetters }) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
       const budgetId = getters.getBudgetId;
       const budget = getters.getBudget;
+
+      console.log(budgetId, budget);
 
       if (!idToken || !userId || !budgetId) {
         alert("Hmm, something is missing. Try again!");
@@ -142,9 +148,9 @@ export const budgetStore = {
         .then(res => res)
         .catch(error => console.log(error));
     },
-    async updateBudgetAmount({ commit, getters }, newTotalSum) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async updateBudgetAmount({ commit, getters, rootGetters }, newTotalSum) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
       const budgetId = getters.getBudgetId;
 
       if (!idToken || !userId || !budgetId) {
@@ -167,14 +173,14 @@ export const budgetStore = {
       await axios
         .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
         .then(res => {
-          commit("storeBudgetAmount", res.data.amount);
+          commit("storeBudget", { ...res.data });
         })
         .catch(error => console.log(error));
     }
   },
   getters: {
     getBudgetItems(state) {
-      return state.budget.items;
+      return state.budget.items ? state.budget.items : [];
     },
     getBudget(state) {
       return state.budget;

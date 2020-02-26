@@ -53,7 +53,7 @@
             <div class="col-6">Remaining:</div>
             <div class="col-6">
               {{ budget.currency }}
-              <span id="remainings">{{ remaining }}</span>
+              <span id="remainings">{{ budget.remaining }}</span>
             </div>
           </div>
         </div>
@@ -62,6 +62,7 @@
           <app-budget-list-add-item
             v-if="addItem"
             @hideInput="addItem = false"
+            @itemAdded="itemAdded"
           ></app-budget-list-add-item>
           <app-budget-list-item
             v-for="item in budget.items"
@@ -77,6 +78,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
 import BudgetListAddItem from "../../components/Budget/BudgetListAddItem.vue";
 
@@ -85,28 +87,33 @@ export default {
     return {
       addItem: false,
       editBudget: false,
-      budget: 0,
-      trip: {},
-      budget: {
+      trip: {}
+      /* budget: {
         id: null,
         amount: 0,
         items: [],
         tripId: null,
-        currency: "$"
-      },
-      remaining: 0
+        currency: "$",
+        remaining: 0
+      } */
     };
+  },
+  computed: {
+    ...mapState("budget", ["budget"])
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-    this.$store.dispatch("fetchBudget", this.trip.id);
-    this.budget = this.$store.getters.getBudget;
-    console.log(this.budget);
+    this.$store.dispatch("budget/fetchBudget", this.trip.id);
+    /* this.budget = this.$store.getters.getBudget;
+    console.log(this.budget); */
   },
   methods: {
     saveBudget() {
-      this.$store.dispatch("updateBudgetAmount", this.budget.amount);
+      this.$store.dispatch("budget/updateBudgetAmount", this.budget.amount);
       this.editBudget = false;
+    },
+    itemAdded() {
+      this.addItem = false;
     }
   },
   /*
