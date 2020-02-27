@@ -1,5 +1,6 @@
 import axios from "../../axios/axios";
 import router from "../../router/index";
+import { v4 as uuidv4 } from "uuid";
 
 const getInitState = () => {
   return {
@@ -32,6 +33,14 @@ export const budgetStore = {
         state.budget.items = [data];
       } else {
         state.budget.items.unshift(data);
+      }
+    },
+    deleteBucketlistItem(state, index) {
+      if (state.budget.items === undefined || state.budget.items.length === 0) {
+        return false;
+      } else {
+        state.budget.items.splice(index, 1);
+        return true;
       }
     },
     resetState(state) {
@@ -110,7 +119,8 @@ export const budgetStore = {
 
     addBudgetListItem({ commit, state, getters, dispatch }, data) {
       const item = {
-        budget_id: 1,
+        id: uuidv4(),
+        budgetId: getters.getBudgetId,
         title: data.title,
         amount: data.amount,
         startDate: data.startDate,
@@ -129,23 +139,55 @@ export const budgetStore = {
       dispatch("updateBudget");
     },
 
+    deleteBudgetListItem({ commit, state, getters, dispatch }, id) {
+      const items = getters.getBudgetItems;
+
+      if (items === undefined || items.length === 0) {
+        return false;
+      }
+
+      const index = items.findIndex(item => item.id === id);
+
+      const removed = items.splice(index, 1);
+
+      if (removed.length > 0) {
+        const itemsSum = items.reduce((acc, item) => acc + item.amount, 0);
+        const remainings = getters.getBudgetAmount - itemsSum;
+
+        commit("storeBudget", {
+          ...getters.getBudget,
+          items,
+          remaining: remainings
+        });
+        dispatch("updateBudget");
+      }
+    },
+
     // Ugly temporary solution to set the id as a property
-    async updateBudget({ getters, rootGetters }) {
+    async updateBudget({ getters, rootGetters, commit }) {
       const idToken = rootGetters.idToken;
       const userId = rootGetters.userId;
       const budgetId = getters.getBudgetId;
       const budget = getters.getBudget;
-
-      console.log(budgetId, budget);
 
       if (!idToken || !userId || !budgetId) {
         alert("Hmm, something is missing. Try again!");
         return;
       }
 
+      const itemsSum = budget.items.reduce((acc, item) => acc + item.amount, 0);
+      const remainings = budget.amount - itemsSum;
+
+      const newBudget = {
+        ...budget,
+        remaining: remainings
+      };
+
       await axios
-        .put(`/budgets/${budgetId}.json?auth=${idToken}`, budget)
-        .then(res => res)
+        .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
+        .then(res => {
+          commit("storeBudget", { ...res.data });
+        })
         .catch(error => console.log(error));
     },
     async updateBudgetAmount({ commit, getters, rootGetters }, newTotalSum) {

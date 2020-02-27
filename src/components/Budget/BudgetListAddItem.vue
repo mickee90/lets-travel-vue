@@ -52,12 +52,15 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+import { getDate } from "../../helpers";
+
 export default {
   data() {
     return {
       item: {
         title: "",
-        startDate: new Date().toISOString().split("T")[0],
+        startDate: getDate(),
         amount: 0
       }
     };
@@ -83,17 +86,6 @@ export default {
       this.$store.dispatch("budget/addBudgetListItem", newItem);
       this.resetItem();
       this.$emit("itemAdded");
-
-      /* axios
-        .post(window.location.pathname, { title: listItem })
-        .then(response => {
-          console.log(response.data);
-          this.$emit("added", response.data);
-          this.$emit("itemAdded");
-        })
-        .catch(error => {
-          alert(error.response.data.message);
-        }); */
     },
     cancel() {
       this.resetItem();
@@ -102,19 +94,10 @@ export default {
     resetItem() {
       this.item = {
         title: "",
-        startDate: new Date().toISOString().split("T")[0],
+        startDate: getDate(),
         amount: 0
       };
     }
-
-    /* destroy() {
-      axios
-        .delete(window.location.pathname + "/" + this.item.id)
-        .then(this.$emit("deleted", this.item.id))
-        .catch(error => {
-          alert(error.response.data.message);
-        });
-    } */
   }
 };
 </script>

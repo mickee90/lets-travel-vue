@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import BudgetListItem from "../../components/Budget/BudgetListItem.vue";
 import BudgetListAddItem from "../../components/Budget/BudgetListAddItem.vue";
 
@@ -88,53 +88,26 @@ export default {
       addItem: false,
       editBudget: false,
       trip: {}
-      /* budget: {
-        id: null,
-        amount: 0,
-        items: [],
-        tripId: null,
-        currency: "$",
-        remaining: 0
-      } */
     };
   },
   computed: {
-    ...mapState("budget", ["budget"])
+    ...mapState("budget", ["budget"]),
+    ...mapGetters("budget", ["getBudget"])
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-    this.$store.dispatch("budget/fetchBudget", this.trip.id);
-    /* this.budget = this.$store.getters.getBudget;
-    console.log(this.budget); */
+    this.fetchBudget(this.trip.id);
   },
   methods: {
+    ...mapActions("budget", ["fetchBudget", "updateBudget"]),
     saveBudget() {
-      this.$store.dispatch("budget/updateBudgetAmount", this.budget.amount);
+      this.updateBudget();
       this.editBudget = false;
     },
     itemAdded() {
       this.addItem = false;
     }
   },
-  /*
-  computed: {
-    budget() {
-      return this.$store.getters.getBudget;
-    },
-    budgetItems() {
-      return this.$store.getters.getBudgetItems;
-    }
-  },
-  beforeCreate() {
-    const itemSum = budgetItems.reduce((acc, item) => acc + item.amount, 0);
-    const remainings = budget.remaining - itemSum;
-
-    this.$store.dispatch("storeBudgetItems", budgetItems);
-    this.$store.dispatch("storeBudget", { ...budget, remaining: remainings });
-  },
-  mounted() {
-    this.budgetTotalAmount = this.budget.total_amount;
-  }, */
   components: {
     appBudgetListItem: BudgetListItem,
     appBudgetListAddItem: BudgetListAddItem
