@@ -6,7 +6,7 @@ import { authStore } from "./modules/authStore";
 import { tripStore } from "./modules/tripStore.js";
 import { postStore } from "./modules/postStore.js";
 import { checklistStore } from "./modules/checklistStore.js";
-import { bucketListStore } from "./modules/bucketListStore.js";
+import { bucketlistStore } from "./modules/bucketlistStore.js";
 import { budgetStore } from "./modules/budgetStore.js";
 
 const VuexPersist = new VuexPersistance({
@@ -22,7 +22,7 @@ export default new Vuex.Store({
     trips: tripStore,
     posts: postStore,
     checklist: checklistStore,
-    bucketList: bucketListStore,
+    bucketlist: bucketlistStore,
     budget: budgetStore
   },
   actions: {

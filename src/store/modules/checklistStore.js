@@ -6,6 +6,7 @@ const getInitState = () => {
 };
 
 export const checklistStore = {
+  namespaced: true,
   state: getInitState(),
   mutations: {
     storeChecklistItems(state, data) {
@@ -25,9 +26,9 @@ export const checklistStore = {
     }
   },
   actions: {
-    async fetchChecklistItems({ commit, getters }, tripId) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async fetchChecklistItems({ commit, rootGetters }, tripId) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -52,9 +53,9 @@ export const checklistStore = {
     storeChecklistItems({ commit }, data) {
       commit("storeChecklistItems", data);
     },
-    async createChecklistItems({ commit, state, dispatch, getters }, title) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async createChecklistItems({ commit, state, rootGetters }, title) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -64,7 +65,7 @@ export const checklistStore = {
       const lastItem = state.checklistItems[state.checklistItems.length - 1];
 
       const newItem = {
-        tripId: getters.getTrip.id,
+        tripId: rootGetters.getTrip.id,
         order: lastItem ? lastItem.order++ : 1,
         title: title,
         completed: false,
@@ -78,9 +79,9 @@ export const checklistStore = {
         })
         .catch(error => console.log(error));
     },
-    async deleteChecklistItem({ commit, getters }, id) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async deleteChecklistItem({ commit, getters, rootGetters }, id) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");

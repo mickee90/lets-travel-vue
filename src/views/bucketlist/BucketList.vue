@@ -46,12 +46,12 @@ export default {
   },
   computed: {
     bucketlistItems() {
-      return this.$store.getters.getBucketlistItems;
+      return this.$store.getters["bucketlist/getBucketlistItems"];
     }
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-    this.$store.dispatch("fetchBucketlistItems", this.trip.id);
+    this.$store.dispatch("bucketlist/fetchBucketlistItems", this.trip.id);
   },
   components: {
     CheckableListItem,

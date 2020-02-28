@@ -5,7 +5,8 @@ const getInitState = () => {
   return { bucketlistItems: [] };
 };
 
-export const bucketListStore = {
+export const bucketlistStore = {
+  namespaced: true,
   state: getInitState(),
   mutations: {
     storeBucketlistItems(state, data) {
@@ -28,9 +29,9 @@ export const bucketListStore = {
     storeBucketlistItems({ commit }, data) {
       commit("storeBucketlistItems", data);
     },
-    async fetchBucketlistItems({ commit, getters }, tripId) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async fetchBucketlistItems({ commit, rootGetters }, tripId) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -45,7 +46,6 @@ export const bucketListStore = {
         .catch(error => console.log(error));
 
       const tempItems = response.data;
-      /* console.log(res, tempItems); */
 
       const items = Object.keys(tempItems).map(bucketlistId => {
         return { ...tempItems[bucketlistId], id: bucketlistId };
@@ -53,12 +53,10 @@ export const bucketListStore = {
 
       commit("storeBucketlistItems", items);
     },
-    async createBucketlistItems({ commit, state, dispatch, getters }, title) {
-      /* const { idToken, userId } = dispatch("validateAuth");
-      console.log(idToken, userId); */
+    async createBucketlistItems({ commit, state, rootGetters }, title) {
 
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -68,7 +66,7 @@ export const bucketListStore = {
       const lastItem = state.bucketlistItems[state.bucketlistItems.length - 1];
 
       const newItem = {
-        tripId: getters.getTrip.id,
+        tripId: rootGetters.getTrip.id,
         order: lastItem ? lastItem.order++ : 1,
         title: title,
         completed: false,
@@ -82,9 +80,9 @@ export const bucketListStore = {
         })
         .catch(error => console.log(error));
     },
-    async deleteBucketlistItem({ commit, getters }, id) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async deleteBucketlistItem({ commit, getters, rootGetters }, id) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");

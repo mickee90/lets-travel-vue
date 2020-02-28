@@ -44,7 +44,10 @@ export default {
 
       const titleListType = capitalizeFirstLetter(this.listType);
 
-      this.$store.dispatch(`create${titleListType}Items`, listItem);
+      this.$store.dispatch(
+        `${this.listType}/create${titleListType}Items`,
+        listItem
+      );
       this.itemTitle = "";
       this.$emit("hideInput");
     },

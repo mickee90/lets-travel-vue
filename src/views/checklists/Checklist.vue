@@ -45,12 +45,12 @@ export default {
   },
   computed: {
     checklistItems() {
-      return this.$store.getters.getChecklistItems;
+      return this.$store.getters["checklist/getChecklistItems"];
     }
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-    this.$store.dispatch("fetchChecklistItems", this.trip.id);
+    this.$store.dispatch("checklist/fetchChecklistItems", this.trip.id);
   },
   components: {
     CheckableListItem,

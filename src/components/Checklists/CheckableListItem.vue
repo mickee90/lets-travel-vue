@@ -23,13 +23,13 @@ export default {
       return capitalizeFirstLetter(this.listType);
     },
     getGetterString() {
-      return `get${this.getListTypeString}Items`;
+      return `${this.listType}/get${this.getListTypeString}Items`;
     },
     getStoreString() {
-      return `store${this.getListTypeString}Items`;
+      return `${this.listType}/store${this.getListTypeString}Items`;
     },
     getDeleteString() {
-      return `delete${this.getListTypeString}Item`;
+      return `${this.listType}/delete${this.getListTypeString}Item`;
     }
   },
   methods: {

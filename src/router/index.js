@@ -14,7 +14,7 @@ import PostEdit from "../views/posts/PostEdit.vue";
 import PostCreate from "../views/posts/PostCreate.vue";
 import Maps from "../views/maps/Maps.vue";
 import Checklist from "../views/checklists/Checklist.vue";
-import BucketList from "../views/bucketlist/BucketList.vue";
+import Bucketlist from "../views/bucketlist/Bucketlist.vue";
 import Budget from "../views/budget/Budget.vue";
 
 Vue.use(VueRouter);
@@ -162,8 +162,8 @@ const routes = [
   },
   {
     path: "/:tripId/bucket-list",
-    name: "bucketList",
-    component: BucketList,
+    name: "bucketlist",
+    component: Bucketlist,
     meta: {
       defaultLayout: false,
       requiresAuth: true

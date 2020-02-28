@@ -15,7 +15,7 @@
             <i class="tab-icon fas fa-clipboard-list"></i>
             <div class="tab-name">Checklist</div>
           </router-link>
-          <router-link :to="{name:'bucketList', params: {'tripId': tripId}}" class="tab">
+          <router-link :to="{name:'bucketlist', params: {'tripId': tripId}}" class="tab">
             <i class="tab-icon fas fa-clipboard-check"></i>
             <div class="tab-name">Bucket list</div>
           </router-link>
