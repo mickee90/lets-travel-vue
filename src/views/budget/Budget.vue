@@ -66,7 +66,7 @@
           ></app-budget-list-add-item>
           <app-budget-list-item
             v-for="item in budget.items"
-            :item="item"
+            :budgetItem="item"
             :key="item.id"
             :budget="budget"
           ></app-budget-list-item>

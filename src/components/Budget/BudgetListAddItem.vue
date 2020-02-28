@@ -37,14 +37,14 @@
     </div>
 
     <div class="col-3 row">
-      <div class="budget-item-delete col-12 m-auto">
-        <button @click="store">
-          <i class="fas fa-check"></i>
-        </button>
-      </div>
       <div class="budget-item-update col-12 m-auto">
         <button @click="cancel">
           <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      <div class="budget-item-delete col-12 m-auto">
+        <button @click="store">
+          <i class="fas fa-check"></i>
         </button>
       </div>
     </div>

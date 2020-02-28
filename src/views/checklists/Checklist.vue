@@ -16,11 +16,7 @@
         </div>
 
         <div class="item-list">
-          <CheckableListAddItem
-            v-if="addItem"
-            @hideInput="addItem = false"
-            listType="checklist"
-          ></CheckableListAddItem>
+          <CheckableListAddItem v-if="addItem" @hideInput="addItem = false" listType="checklist"></CheckableListAddItem>
 
           <CheckableListItem
             v-for="(item, index) in checklistItems"
@@ -28,7 +24,6 @@
             :index="index"
             :key="index"
             listType="checklist"
-            @deleteItem="onDeleteItem"
           ></CheckableListItem>
         </div>
         <tab-bar></tab-bar>

@@ -43,12 +43,9 @@ export const checklistStore = {
 
       const tempItems = response.data;
 
-      console.log(tempItems);
-
       const items = Object.keys(tempItems).map(checklistId => {
         return { ...tempItems[checklistId], id: checklistId };
       });
-      console.log(items);
 
       commit("storeChecklistItems", items);
     },
@@ -56,9 +53,6 @@ export const checklistStore = {
       commit("storeChecklistItems", data);
     },
     async createChecklistItems({ commit, state, dispatch, getters }, title) {
-      /* const { idToken, userId } = dispatch("validateAuth");
-      console.log(idToken, userId); */
-
       const idToken = getters.idToken;
       const userId = getters.userId;
 
@@ -96,8 +90,6 @@ export const checklistStore = {
         .delete(`/checklists/${id}.json?auth=${idToken}`)
         .then(res => res.data)
         .catch(error => console.log(error));
-
-      console.log(response);
 
       const index = getters.getChecklistItems.findIndex(item => item.id === id);
 

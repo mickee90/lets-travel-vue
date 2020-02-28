@@ -52,15 +52,6 @@ export default {
       this.itemTitle = "";
       this.$emit("hideInput");
     }
-
-    /* destroy() {
-      axios
-        .delete(window.location.pathname + "/" + this.item.id)
-        .then(this.$emit("deleted", this.item.id))
-        .catch(error => {
-          alert(error.response.data.message);
-        });
-    } */
   }
 };
 </script>

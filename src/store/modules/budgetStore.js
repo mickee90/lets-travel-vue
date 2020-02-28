@@ -75,30 +75,6 @@ export const budgetStore = {
         commit("storeBudget", { ...budget[Object.keys(budget)[0]] });
       }
     },
-    /*  async updateBudget({ commit, getters, dispatch }, tripId) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
-
-      if (!idToken || !userId) {
-        alert("Hmm, something is missing. Try again!");
-        return;
-      }
-
-      const response = await axios
-        .get(
-          `/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-        )
-        .then(res => res)
-        .catch(error => console.log(error));
-
-      const budget = response.data;
-
-      if (Object.keys(budget).length === 0) {
-        dispatch("initBudget", { ...getInitState(), tripId });
-      } else {
-        commit("storeBudget", budget);
-      }
-    }, */
     async initBudget({ commit, getters, dispatch, rootGetters }, data) {
       const idToken = rootGetters.idToken;
       const userId = rootGetters.userId;
@@ -112,6 +88,8 @@ export const budgetStore = {
         .post(`/budgets.json?auth=${idToken}`, data)
         .then(res => {
           commit("storeBudget", { ...data, id: res.data.name });
+
+          // Ugly temporary solution to set the id as a property
           dispatch("updateBudget");
         })
         .catch(error => console.log(error));
@@ -130,13 +108,37 @@ export const budgetStore = {
       commit("addBudgetListItems", item);
 
       const itemsSum = getters.getBudgetItems.reduce(
-        (acc, item) => acc + item.amount,
+        (acc, item) => acc + parseInt(item.amount),
         0
       );
       const remainings = getters.getBudgetAmount - itemsSum;
 
       commit("storeBudget", { ...getters.getBudget, remaining: remainings });
       dispatch("updateBudget");
+    },
+
+    updateBudgetListItem({ commit, state, getters, dispatch }, data) {
+      const items = getters.getBudgetItems;
+
+      if (items === undefined || items.length === 0) {
+        return false;
+      }
+
+      const index = items.findIndex(item => item.id === data.id);
+
+      const swaped = items.splice(index, 1, data);
+
+      if (swaped.length > 0) {
+        const itemsSum = items.reduce((acc, item) => acc + parseInt(item.amount), 0);
+        const remainings = getters.getBudgetAmount - parseInt(itemsSum);
+
+        commit("storeBudget", {
+          ...getters.getBudget,
+          items,
+          remaining: remainings
+        });
+        dispatch("updateBudget");
+      }
     },
 
     deleteBudgetListItem({ commit, state, getters, dispatch }, id) {
@@ -151,8 +153,8 @@ export const budgetStore = {
       const removed = items.splice(index, 1);
 
       if (removed.length > 0) {
-        const itemsSum = items.reduce((acc, item) => acc + item.amount, 0);
-        const remainings = getters.getBudgetAmount - itemsSum;
+        const itemsSum = items.reduce((acc, item) => acc + parseInt(item.amount), 0);
+        const remainings = getters.getBudgetAmount - parseInt(itemsSum);
 
         commit("storeBudget", {
           ...getters.getBudget,
@@ -163,7 +165,6 @@ export const budgetStore = {
       }
     },
 
-    // Ugly temporary solution to set the id as a property
     async updateBudget({ getters, rootGetters, commit }) {
       const idToken = rootGetters.idToken;
       const userId = rootGetters.userId;
@@ -175,8 +176,8 @@ export const budgetStore = {
         return;
       }
 
-      const itemsSum = budget.items.reduce((acc, item) => acc + item.amount, 0);
-      const remainings = budget.amount - itemsSum;
+      const itemsSum = budget.items.reduce((acc, item) => acc + parseInt(item.amount), 0);
+      const remainings = budget.amount - parseInt(itemsSum);
 
       const newBudget = {
         ...budget,
@@ -201,10 +202,10 @@ export const budgetStore = {
       }
 
       const itemsSum = getters.getBudgetItems.reduce(
-        (acc, item) => acc + item.amount,
+        (acc, item) => acc + parseInt(item.amount),
         0
       );
-      const remainings = newTotalSum - itemsSum;
+      const remainings = parseInt(newTotalSum) - itemsSum;
 
       const newBudget = {
         ...getters.getBudget,

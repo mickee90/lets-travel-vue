@@ -16,11 +16,7 @@
         </div>
 
         <div class="item-list">
-          <CheckableListAddItem
-            v-if="addItem"
-            @hideInput="addItem = false"
-            listType="bucketlist"
-          ></CheckableListAddItem>
+          <CheckableListAddItem v-if="addItem" @hideInput="addItem = false" listType="bucketlist"></CheckableListAddItem>
 
           <CheckableListItem
             v-for="(item, index) in bucketlistItems"
@@ -28,7 +24,6 @@
             :index="index"
             :key="index"
             listType="bucketlist"
-            @deleteItem="onDeleteItem"
           ></CheckableListItem>
         </div>
 
@@ -51,7 +46,6 @@ export default {
   },
   computed: {
     bucketlistItems() {
-      console.log(this.$store.getters.getBucketlistItems);
       return this.$store.getters.getBucketlistItems;
     }
   },
