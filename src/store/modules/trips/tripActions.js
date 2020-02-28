@@ -55,6 +55,7 @@ export const actions = {
             .then(res => res)
             .catch(error => console.log(error));
     },
+
     fetchTripImages({ commit, rootGetters }) {
         const idToken = rootGetters.idToken;
         const tempImages = axios
@@ -68,6 +69,7 @@ export const actions = {
 
         commit("storeTripImages", images);
     },
+
     editTrip({ commit, state, rootGetters }, payload) {
         const idToken = rootGetters.idToken;
         const userId = rootGetters.userId;
@@ -93,6 +95,7 @@ export const actions = {
 
         router.replace(`/trip/${trip.id}`);
     },
+
     storeTrip({ commit, state, rootGetters }, payload) {
         const idToken = rootGetters.idToken;
         const userId = rootGetters.userId;
@@ -116,6 +119,7 @@ export const actions = {
 
         router.replace(`/trip/${trip.id}`);
     },
+
     setTrip({ commit, state }, tripId) {
         const trip = state.trips.find(item => item.id === tripId);
         commit("setTrip", trip);

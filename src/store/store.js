@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersistance from "vuex-persist";
 
-import { authStore } from "./modules/authStore";
+import { authStore } from "./modules/auth/authStore";
 import { tripStore } from "./modules/trips/tripStore";
 import { postStore } from "./modules/posts/postStore";
 import { checklistStore } from "./modules/checklists/checklistStore";
