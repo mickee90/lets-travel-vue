@@ -20,19 +20,14 @@
                     }
                   }"
                   tag="a"
-                  >Edit</router-link
-                >
+                >Edit</router-link>
               </div>
             </div>
 
             <div class="post-body">
               <div class="post-title">{{ post.title }}</div>
-              <div class="date_box">
-                {{ post.startDate }} to {{ post.endDate }}
-              </div>
-              <div class="map_marker">
-                lat: {{ post.lat }} lng: {{ post.lng }}
-              </div>
+              <div class="date_box">{{ post.startDate }} to {{ post.endDate }}</div>
+              <div class="map_marker">lat: {{ post.lat }} lng: {{ post.lng }}</div>
 
               <div class="desc_box">{{ post.content }}</div>
             </div>
@@ -62,7 +57,7 @@ export default {
     };
   },
   created() {
-    const post = this.$store.getters.getPosts.find(
+    const post = this.$store.getters["posts/getPosts"].find(
       post => post.id == this.$router.history.current.params.postId
     );
     this.post = { ...this.post, ...post };

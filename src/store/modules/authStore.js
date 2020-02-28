@@ -112,8 +112,6 @@ export const authStore = {
         userId: userId,
         expirationDate
       });
-
-      /* router.replace("/login"); */
     },
     logout({ commit, dispatch }) {
       dispatch("resetAllStates");
@@ -146,17 +144,6 @@ export const authStore = {
         })
         .catch(error => console.log(error));
     }
-    /* validateAuth({ getters }) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
-
-      if (!idToken || !userId) {
-        alert("Hmm, something is missing. Try again!");
-        return;
-      }
-
-      return { idToken, userId };
-    } */
   },
   getters: {
     user(state) {
@@ -164,7 +151,6 @@ export const authStore = {
     },
     isAuthenticated(state) {
       return state.idToken !== null;
-      //return state.idToken !== null;
     },
     idToken(state) {
       return state.idToken;

@@ -8,18 +8,10 @@
         <form class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
-              <button onclick="history.back()" class="btn btn-secondary">
-                Cancel
-              </button>
+              <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
             </div>
             <div class="col pr-0 text-right">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="onSubmit"
-              >
-                Create post
-              </button>
+              <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Create post</button>
             </div>
           </div>
 
@@ -52,13 +44,7 @@
             </div>
             <div class="col-md-6">
               <label for="endDate">End Date</label>
-              <input
-                id="endDate"
-                type="date"
-                class="form-control"
-                name="endDate"
-                v-model="endDate"
-              />
+              <input id="endDate" type="date" class="form-control" name="endDate" v-model="endDate" />
             </div>
           </div>
 
@@ -100,16 +86,10 @@
                 onclick="searchMarker();return false;"
                 class="btn btn-primary"
                 style="border-radius:0;"
-              >
-                Search
-              </button>
+              >Search</button>
             </div>
 
-            <ul
-              id="search-result-list"
-              class="form-group row hide"
-              style="padding:0;"
-            ></ul>
+            <ul id="search-result-list" class="form-group row hide" style="padding:0;"></ul>
             <div id="map-dummy" class="col-12" style="height: 0;"></div>
           </div>
         </form>
@@ -146,7 +126,7 @@ export default {
         return;
       }
 
-      this.$store.dispatch("createPost", newItem);
+      this.$store.dispatch("posts/createPost", newItem);
       this.$router.replace(`/${tripId}/posts`);
     }
   }

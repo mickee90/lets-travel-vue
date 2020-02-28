@@ -15,8 +15,7 @@
                 params: { tripId: this.$store.getters.getTrip.id }
               }"
               tag="a"
-              >Add new post</router-link
-            >
+            >Add new post</router-link>
           </div>
         </div>
 
@@ -49,8 +48,9 @@ export default {
     };
   },
   created() {
+    console.log(this.$store.getters.getTrip.id);
     this.$store
-      .dispatch("fetchPosts", this.$store.getters.getTrip.id)
+      .dispatch("posts/fetchPosts", this.$store.getters.getTrip.id)
       .then(res => {
         this.posts = res;
       });

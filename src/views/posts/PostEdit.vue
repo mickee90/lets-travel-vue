@@ -8,18 +8,10 @@
         <form class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
-              <button onclick="history.back()" class="btn btn-secondary">
-                Cancel
-              </button>
+              <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
             </div>
             <div class="col pr-0 text-right">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="onSubmit"
-              >
-                Update
-              </button>
+              <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Update</button>
             </div>
           </div>
 
@@ -99,16 +91,10 @@
                 onclick="searchMarker();return false;"
                 class="btn btn-primary"
                 style="border-radius:0;"
-              >
-                Search
-              </button>
+              >Search</button>
             </div>
 
-            <ul
-              id="search-result-list"
-              class="form-group row hide"
-              style="padding:0;"
-            ></ul>
+            <ul id="search-result-list" class="form-group row hide" style="padding:0;"></ul>
             <div id="map-dummy" class="col-12" style="height: 0;"></div>
           </div>
         </form>
@@ -147,11 +133,11 @@ export default {
         lng: this.lng
       };
 
-      const update = await this.$store.dispatch("editPost", editedPost);
+      const update = await this.$store.dispatch("posts/editPost", editedPost);
     }
   },
   created() {
-    const post = this.$store.getters.getPosts.find(
+    const post = this.$store.getters["posts/getPosts"].find(
       post => post.id == this.$router.history.current.params.postId
     );
     this.post = { ...this.post, ...post };

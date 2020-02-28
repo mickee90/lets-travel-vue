@@ -6,6 +6,7 @@ const getInitState = () => {
 };
 
 export const postStore = {
+  namespaced: true,
   state: getInitState(),
   mutations: {
     storePosts(state, data) {
@@ -19,9 +20,9 @@ export const postStore = {
     }
   },
   actions: {
-    async fetchPosts({ commit, getters }, tripId) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async fetchPosts({ commit, getters, rootGetters }, tripId) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -46,9 +47,9 @@ export const postStore = {
     storePosts({ commit }, data) {
       commit("storePosts", data);
     },
-    async createPost({ commit, getters }, data) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async createPost({ commit, rootGetters }, data) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -62,9 +63,9 @@ export const postStore = {
 
       commit("addPost", response.data);
     },
-    async editPost({ state, commit, getters }, updatedPost) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async editPost({ state, commit, rootGetters }, updatedPost) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");

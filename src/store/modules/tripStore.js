@@ -1,13 +1,13 @@
 import axios from "../../axios/axios";
 import store from "../../store/store";
 import router from "../../router/index";
-import { trip_images } from "../../mock-data/trip_images";
 
 const getInitState = () => {
   return { trips: [], trip: {}, tripImages: [] };
 };
 
 export const tripStore = {
+  namespace: true,
   state: getInitState(),
   mutations: {
     storeTrips(state, data) {
@@ -31,9 +31,9 @@ export const tripStore = {
       commit("storeTrips", data);
     },
 
-    async fetchTrips({ commit, dispatch, state, getters }) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    async fetchTrips({ commit, dispatch, rootGetters }) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -71,8 +71,8 @@ export const tripStore = {
       return newTrips;
     },
 
-    async fetchTripImage({ commit, state, getters }, tripImageId) {
-      const idToken = getters.idToken;
+    async fetchTripImage({ rootGetters }, tripImageId) {
+      const idToken = rootGetters.idToken;
       return axios
         .get(
           `/tripImages.json?auth=${idToken}&orderBy="$key"&startAt="${tripImageId}"&limitToFirst=1`
@@ -80,8 +80,8 @@ export const tripStore = {
         .then(res => res)
         .catch(error => console.log(error));
     },
-    fetchTripImages({ commit, getters }) {
-      const idToken = getters.idToken;
+    fetchTripImages({ commit, rootGetters }) {
+      const idToken = rootGetters.idToken;
       const tempImages = axios
         .get(`/tripImages.json?auth=${idToken}`)
         .then(res => res)
@@ -93,9 +93,9 @@ export const tripStore = {
 
       commit("storeTripImages", images);
     },
-    editTrip({ commit, state, getters }, payload) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    editTrip({ commit, state, rootGetters }, payload) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
@@ -118,9 +118,9 @@ export const tripStore = {
 
       router.replace(`/trip/${trip.id}`);
     },
-    storeTrip({ commit, state, getters }, payload) {
-      const idToken = getters.idToken;
-      const userId = getters.userId;
+    storeTrip({ commit, state, rootGetters }, payload) {
+      const idToken = rootGetters.idToken;
+      const userId = rootGetters.userId;
 
       if (!idToken || !userId) {
         alert("Hmm, something is missing. Try again!");
