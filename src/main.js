@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import Vuelidate from "vuelidate";
 import TabBar from "@/views/layout/TabBar.vue";
+import Spinner from './components/UI/Spinner'
 
 import router from "./router";
 import store from "./store/store";
@@ -10,6 +11,7 @@ import store from "./store/store";
 Vue.use(Vuelidate);
 
 Vue.component("tab-bar", TabBar);
+Vue.component("Spinner", Spinner);
 
 Vue.config.productionTip = false;
 

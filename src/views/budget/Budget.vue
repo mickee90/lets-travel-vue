@@ -64,6 +64,7 @@
             @hideInput="addItem = false"
             @itemAdded="itemAdded"
           ></app-budget-list-add-item>
+
           <app-budget-list-item
             v-for="item in budget.items"
             :budgetItem="item"

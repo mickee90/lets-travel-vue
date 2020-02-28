@@ -23,7 +23,7 @@
             :item="item"
             :index="index"
             :key="index"
-            listType="checklist"
+            :listType="listType"
           ></CheckableListItem>
         </div>
         <tab-bar></tab-bar>
@@ -39,18 +39,19 @@ import CheckableListAddItem from "../../components/Checklists/CheckableListAddIt
 export default {
   data() {
     return {
+      listType: "checklist",
       addItem: false,
       trip: {}
     };
   },
   computed: {
     checklistItems() {
-      return this.$store.getters["checklist/getChecklistItems"];
+      return this.$store.getters[`${this.listType}/getChecklistItems`];
     }
   },
   created() {
     this.trip = this.$store.getters.getTrip;
-    this.$store.dispatch("checklist/fetchChecklistItems", this.trip.id);
+    this.$store.dispatch(`${this.listType}/fetchChecklistItems`, this.trip.id);
   },
   components: {
     CheckableListItem,

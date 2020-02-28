@@ -9,9 +9,11 @@
           </router-link>
         </div>
       </div>
-      <div class="col-md-3" v-if="trips == null">
+
+      <div class="col-md-3" v-if="trips.length === 0">
         <spinner />
       </div>
+
       <div class="col-md-3" v-else>
         <router-link
           :to="{ name: 'trip', params: { tripId: trip.id } }"
@@ -21,11 +23,7 @@
         >
           <div class="card">
             <!-- @todo make dynamic! -->
-            <img
-              src="@/assets/imgs/trips/soccer.jpg"
-              :alt="trip.image.title"
-              class="card-img"
-            />
+            <img src="@/assets/imgs/trips/soccer.jpg" :alt="trip.image.title" class="card-img" />
             <div class="trip-footer">{{ trip.title }}</div>
           </div>
         </router-link>
@@ -35,19 +33,16 @@
 </template>
 
 <script>
-import Spinner from "../../components/UI/Spinner";
-
 export default {
   data() {
     return {
       trip_images: [],
-      trips: null
+      trips: []
     };
   },
   created() {
     this.fetchTrips().then(res => {
       this.trips = this.$store.getters.getTrips.reverse();
-      console.log(this.trips);
     });
   },
   methods: {
@@ -58,9 +53,6 @@ export default {
     async fetchTrips() {
       await this.$store.dispatch("fetchTrips");
     }
-  },
-  components: {
-    spinner: Spinner
   }
 };
 </script>

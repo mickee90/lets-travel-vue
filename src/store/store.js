@@ -3,11 +3,11 @@ import Vuex from "vuex";
 import VuexPersistance from "vuex-persist";
 
 import { authStore } from "./modules/authStore";
-import { tripStore } from "./modules/tripStore.js";
-import { postStore } from "./modules/postStore.js";
-import { checklistStore } from "./modules/checklistStore.js";
-import { bucketlistStore } from "./modules/bucketlistStore.js";
-import { budgetStore } from "./modules/budgetStore.js";
+import { tripStore } from "./modules/trips/tripStore";
+import { postStore } from "./modules/posts/postStore";
+import { checklistStore } from "./modules/checklists/checklistStore";
+import { bucketlistStore } from "./modules/bucketlists/bucketlistStore";
+import { budgetStore } from "./modules/budgets/budgetStore";
 
 const VuexPersist = new VuexPersistance({
   key: "vuex-lt",

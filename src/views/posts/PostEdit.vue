@@ -22,7 +22,7 @@
               class="form-control title-input"
               name="title"
               placeholder="Title *"
-              v-model="title"
+              v-model="post.title"
               autocomplete="title"
               autofocus
             />
@@ -37,7 +37,7 @@
                 type="date"
                 class="form-control"
                 name="start_date"
-                v-model="startDate"
+                v-model="post.startDate"
                 required
               />
             </div>
@@ -48,7 +48,7 @@
                 type="date"
                 class="form-control"
                 name="end_date"
-                v-model="endDate"
+                v-model="post.endDate"
               />
             </div>
           </div>
@@ -62,7 +62,7 @@
                 class="form-control"
                 name="content"
                 rows="10"
-                v-model="content"
+                v-model="post.content"
               ></textarea>
             </div>
           </div>
@@ -105,51 +105,35 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      id: null,
-      title: "",
-      tripId: null,
-      startDate: "",
-      endDate: "",
-      content: "",
-      lat: "",
-      lng: ""
+      ...mapState("posts", ["post"])
     };
   },
+  /* computed: {
+  }, */
   methods: {
     async onSubmit(e) {
       e.preventDefault();
 
       const editedPost = {
-        id: this.id,
-        title: this.title,
-        tripId: this.tripId,
-        startDate: this.startDate,
-        endDate: this.endDate,
-        content: this.content,
-        lat: this.lat,
-        lng: this.lng
+        ...this.post,
+        lat: this.post.lat ?? "",
+        lng: this.post.lng ?? ""
       };
 
       const update = await this.$store.dispatch("posts/editPost", editedPost);
     }
   },
   created() {
-    const post = this.$store.getters["posts/getPosts"].find(
-      post => post.id == this.$router.history.current.params.postId
+    this.$store.dispatch(
+      "posts/fetchPost",
+      this.$router.history.current.params.postId
     );
-    this.post = { ...this.post, ...post };
-
-    this.id = post.id;
-    this.title = post.title;
-    this.tripId = post.tripId;
-    this.startDate = post.startDate;
-    this.endDate = post.endDate;
-    this.content = post.content;
-    this.lat = post.lat;
-    this.lng = post.lng;
+    this.post = { ...this.$store.getters["posts/getPost"] };
     this.trip = this.$store.getters.getTrip;
   }
 };

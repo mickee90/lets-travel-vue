@@ -9,18 +9,10 @@
           <form @submit.prevent="onSubmit" class="col-12">
             <div class="trip-row submit-btn-bar">
               <div class="col p-0">
-                <button onclick="history.back()" class="btn btn-secondary">
-                  Cancel
-                </button>
+                <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
               </div>
               <div class="col pr-0 text-right">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click.prevent="onSubmit"
-                >
-                  Save
-                </button>
+                <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Save</button>
               </div>
             </div>
 
@@ -41,7 +33,8 @@
             <div class="form-group trip-row">
               <div class="col-md-6">
                 <label for="start_date">
-                  Start date <span class="required">*</span>
+                  Start date
+                  <span class="required">*</span>
                 </label>
 
                 <input
@@ -54,9 +47,7 @@
                 />
               </div>
               <div class="col-md-6">
-                <label for="end_date">
-                  End Date
-                </label>
+                <label for="end_date">End Date</label>
                 <input
                   id="end_date"
                   type="date"
@@ -68,9 +59,7 @@
             </div>
 
             <div class="form-group trip-row">
-              <label for="description" class="col-12">
-                Description
-              </label>
+              <label for="description" class="col-12">Description</label>
 
               <div class="col-md-12">
                 <textarea
@@ -79,21 +68,18 @@
                   name="description"
                   rows="10"
                   v-model="description"
-                >
-                </textarea>
+                ></textarea>
               </div>
             </div>
 
             <div class="form-group row justify-content-end">
-              <small class="form-text text-muted"
-                ><span class="required">*</span> = required</small
-              >
+              <small class="form-text text-muted">
+                <span class="required">*</span> = required
+              </small>
             </div>
 
             <div class="form-group trip-row">
-              <label for="trip_image_id" class="col-md-12">
-                Background image
-              </label>
+              <label for="trip_image_id" class="col-md-12">Background image</label>
             </div>
 
             <div class="form-group trip-row">
@@ -110,7 +96,7 @@
                   />
                   <img :src="getImage(tripImage.path)" :alt="tripImage.title" />
                 </label>
-              </div> -->
+              </div>-->
             </div>
           </form>
         </div>
