@@ -4,7 +4,7 @@
     style="background-image: url(./imgs/trips/soccer.jpg);background-size: cover;"
   >
     <div class="container content">
-      <div class="row justify-content-center vh-100">
+      <div class="row justify-content-center vh-100 no-gutters">
         <div class="col-md-8 vh-100">
           <div class="card vh-100">
             <div class="title-input">{{ trip.title }}</div>

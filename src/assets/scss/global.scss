@@ -22,36 +22,6 @@ body {
   position: relative;
 }
 
-.content .tab-panel {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
-}
-
-.content .tab-panel .tabs {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.content .tab-panel .tabs .tab {
-  text-align: center;
-  height: 80px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  color: #212529;
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
-  background-color: #f8fafc;
-}
-
-.content .tab-panel .tabs .tab .tab-icon {
-  font-size: 30px;
-}
-
-.content .tab-panel .tabs .tab .tab-name {
-  line-height: 30px;
-}
-
 .button-bar {
   height: 40px;
   line-height: 40px;
