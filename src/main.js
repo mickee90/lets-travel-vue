@@ -19,7 +19,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyCxov2-5L3_oizHCgfkxn7CBZrEc-gRhHc",
+    key: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
     libraries: "places" // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
