@@ -1,46 +1,42 @@
 <template>
-  <div
-    class="banner-image"
-    style="background-image: url(./imgs/trips/soccer.jpg);background-size: cover;"
-  >
-    <div class="container content posts">
-      <div class="post-body">
-        <div class="title-input col-12">{{ trip.title }} - Posts</div>
+  <div class="container content posts">
+    <div class="post-body">
+      <div class="title-input col-12">{{ trip.title }} - Posts</div>
 
-        <div class="button-bar col-12">
-          <div class="text-right">
-            <router-link
-              :to="{
-                name: 'post-create',
-                params: { tripId: this.$store.getters.getTrip.id }
-              }"
-              tag="a"
-            >Add new post</router-link>
-          </div>
-        </div>
-
-        <template v-if="posts.length === 0">
-          <spinner />
-        </template>
-
-        <template v-else>
+      <div class="button-bar col-12">
+        <div class="text-right">
           <router-link
-            :to="{ name: 'post', params: { postId: post.id } }"
-            v-for="post in posts"
-            :key="post.id"
+            :to="{
+              name: 'post-create',
+              params: { tripId: this.$store.getters.getTrip.id }
+            }"
             tag="a"
+            >Add new post</router-link
           >
-            <div class="col-12 post budget-item">
-              <div class="col-12 pl-2 pr-0 row">
-                <div class="budget-item-title col-12">{{ post.title }}</div>
-                <div class="budget-item-date col-12">{{ post.startDate }}</div>
-              </div>
-            </div>
-          </router-link>
-        </template>
-
-        <tab-bar></tab-bar>
+        </div>
       </div>
+
+      <template v-if="posts.length === 0">
+        <spinner />
+      </template>
+
+      <template v-else>
+        <router-link
+          :to="{ name: 'post', params: { postId: post.id } }"
+          v-for="post in posts"
+          :key="post.id"
+          tag="a"
+        >
+          <div class="col-12 post budget-item">
+            <div class="col-12 pl-2 pr-0 row">
+              <div class="budget-item-title col-12">{{ post.title }}</div>
+              <div class="budget-item-date col-12">{{ post.startDate }}</div>
+            </div>
+          </div>
+        </router-link>
+      </template>
+
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>

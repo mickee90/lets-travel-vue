@@ -1,55 +1,55 @@
 <template>
-  <div
-    class="banner-image"
-    style="background-image: url(./imgs/trips/soccer.jpg);background-size: cover;"
-  >
-    <div class="container content">
-      <div class="post-body">
-        <div class="title-input col-12">Maps</div>
+  <div class="container content">
+    <div class="post-body">
+      <div class="title-input col-12">Maps</div>
 
-        <div class="button-bar col-12">
-          <div class="text-right">
-            <button @click.prevent="showSearchBox = !showSearchBox">
-              <i class="fas fa-plus-circle"></i>
-            </button>
-          </div>
+      <div class="button-bar col-12">
+        <div class="text-right">
+          <button @click.prevent="showSearchBox = !showSearchBox">
+            <i class="fas fa-plus-circle"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="map-search-box" class="col-12" v-if="showSearchBox">
+        <div class="form-group row no-gutters">
+          <input
+            ref="GoogleMapsLocationInput"
+            type="text"
+            class="form-control title-input col"
+            v-model="searchWord"
+            placeholder="Search your location"
+          />
+          <button @click="searchMarker" class="btn btn-primary btn-search">
+            Search
+          </button>
         </div>
 
-        <div id="map-search-box" class="col-12" v-if="true">
-          <div class="form-group row no-gutters">
-            <input
-              ref="GoogleMapsLocationInput"
-              type="text"
-              class="form-control title-input col"
-              v-model="searchWord"
-              placeholder="Search your location"
-            />
-            <button @click="searchMarker" class="btn btn-primary btn-search">
-              Search
-            </button>
-          </div>
+        <google-map-search-list
+          :list="resultList"
+          @chosen="onSelectedMarker($event)"
+        />
 
-          <google-map-search-list
-            :list="resultList"
-            @chosen="onSelectedMarker($event)"
-          />
+        <google-map-form
+          :selectedMarker="selectedMarker"
+          :selectedMarkerTitle="selectedMarkerTitle"
+          @titleInput="selectedMarkerTitle = $event"
+          :selectedMarkerDesc="selectedMarkerDesc"
+          @descInput="selectedMarkerDesc = $event"
+          @onStoreMarker="storeMarker"
+        />
+      </div>
 
-          <google-map-form
-            :selectedMarker="selectedMarker"
-            :selectedMarkerTitle="selectedMarkerTitle"
-            @titleInput="selectedMarkerTitle = $event"
-            :selectedMarkerDesc="selectedMarkerDesc"
-            @descInput="selectedMarkerDesc = $event"
-            @onStoreMarker="storeMarker"
-          />
-        </div>
+      <template v-if="markers.length === 0">
+        <spinner />
+      </template>
 
+      <template v-else>
         <GmapMap
           ref="mapRef"
           :center="markers[0] ? markers[0].position : { lat: 10, lng: 10 }"
           :zoom="5"
           style="width:100%; height: 300px"
-          v-show="markers.length > 0"
         >
           <gmap-info-window
             :options="infoOptions"
@@ -67,9 +67,9 @@
             @click="toggleInfoWindow(m, index)"
           />
         </GmapMap>
+      </template>
 
-        <tab-bar></tab-bar>
-      </div>
+      <tab-bar></tab-bar>
     </div>
   </div>
 </template>

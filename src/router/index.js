@@ -24,7 +24,6 @@ const routes = [
     path: "/",
     component: Login,
     meta: {
-      defaultLayout: true,
       guest: true
     }
   },
@@ -33,7 +32,6 @@ const routes = [
     name: "login",
     component: Login,
     meta: {
-      defaultLayout: true,
       guest: true
     }
   },
@@ -42,7 +40,6 @@ const routes = [
     name: "register",
     component: Register,
     meta: {
-      defaultLayout: true,
       guest: true
     }
   },
@@ -51,7 +48,6 @@ const routes = [
     name: "trips",
     component: Trips,
     meta: {
-      defaultLayout: true,
       requiresAuth: true
     }
   },
@@ -60,7 +56,6 @@ const routes = [
     name: "trip-create",
     component: TripCreate,
     meta: {
-      defaultLayout: true,
       requiresAuth: true
     }
   },
@@ -69,7 +64,6 @@ const routes = [
     name: "trip-edit",
     component: TripEdit,
     meta: {
-      defaultLayout: true,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -81,7 +75,6 @@ const routes = [
     name: "trip",
     component: Trip,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -93,7 +86,6 @@ const routes = [
     name: "posts",
     component: Posts,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -105,7 +97,6 @@ const routes = [
     name: "post",
     component: Post,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -117,7 +108,6 @@ const routes = [
     name: "post-edit",
     component: PostEdit,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -129,7 +119,6 @@ const routes = [
     name: "post-create",
     component: PostCreate,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -141,7 +130,6 @@ const routes = [
     name: "maps",
     component: Maps,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -153,7 +141,6 @@ const routes = [
     name: "checklist",
     component: Checklist,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -165,7 +152,6 @@ const routes = [
     name: "bucketlist",
     component: Bucketlist,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
@@ -177,7 +163,6 @@ const routes = [
     name: "budget",
     component: Budget,
     meta: {
-      defaultLayout: false,
       requiresAuth: true
     },
     beforeEnter(to, from, next) {
