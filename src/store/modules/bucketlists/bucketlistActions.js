@@ -65,5 +65,28 @@ export const actions = {
     const index = getters.getBucketlistItems.findIndex(item => item.id === id);
 
     commit("deleteBucketlistItem", index);
+  },
+
+  async editBucketlistItem({ state, commit, rootGetters }, updatedItem) {
+    const idToken = rootGetters.idToken;
+    const userId = rootGetters.userId;
+
+    if (!idToken || !userId) {
+      alert("Hmm, something is missing. Try again!");
+      return;
+    }
+
+    await axios.put(
+      `/bucketlists/${updatedItem.id}.json?auth=${idToken}`,
+      updatedItem
+    );
+
+    const items = [...state.bucketlistItems].map(tempItem =>
+      tempItem.id !== updatedItem.id
+        ? tempItem
+        : { ...tempItem, ...updatedItem }
+    );
+
+    commit("storeBucketlistItems", items);
   }
 };

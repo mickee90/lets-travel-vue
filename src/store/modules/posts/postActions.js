@@ -28,6 +28,7 @@ export const actions = {
     const response = await axios.get(
       `/posts.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
     );
+
     const tempPosts = response.data;
 
     const posts = Object.keys(tempPosts).map(postId => {

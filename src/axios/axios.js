@@ -34,12 +34,13 @@ instance.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 500) {
-      console.log(error.response.status, error.response.statusText);
+      /* console.log(error.response.status, error.response.statusText); */
+      alert("Ops! Something went wrong... Please reload and try again.");
     }
 
     if (error.response.status === 400) {
-      console.log(error.response.status, error.response.statusText);
-      alert("Could not be found!");
+      /* console.log(error.response.status, error.response.statusText); */
+      alert("Ops! Something went wrong... Please reload and try again.");
     }
 
     if (error.response.status === 401) {

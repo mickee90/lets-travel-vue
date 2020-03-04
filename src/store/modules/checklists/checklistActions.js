@@ -65,5 +65,28 @@ export const actions = {
     const index = getters.getChecklistItems.findIndex(item => item.id === id);
 
     commit("deleteChecklistItem", index);
+  },
+
+  async editChecklistItem({ state, commit, rootGetters }, updatedItem) {
+    const idToken = rootGetters.idToken;
+    const userId = rootGetters.userId;
+
+    if (!idToken || !userId) {
+      alert("Hmm, something is missing. Try again!");
+      return;
+    }
+
+    await axios.put(
+      `/checklists/${updatedItem.id}.json?auth=${idToken}`,
+      updatedItem
+    );
+
+    const items = [...state.checklistItems].map(tempItem =>
+      tempItem.id !== updatedItem.id
+        ? tempItem
+        : { ...tempItem, ...updatedItem }
+    );
+
+    commit("storeChecklistItems", items);
   }
 };
