@@ -5,7 +5,7 @@ export const actions = {
   storeBudget({ commit }, data) {
     commit("storeBudget", data);
   },
-  async fetchBudget({ commit, getters, dispatch, rootGetters }, tripId) {
+  async fetchBudget({ commit, dispatch, rootGetters }, tripId) {
     const idToken = rootGetters.idToken;
     const userId = rootGetters.userId;
 
@@ -16,7 +16,6 @@ export const actions = {
 
     const response = await axios
       .get(`/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`)
-      .then(res => res)
       .catch(error => console.log(error));
 
     const budget = response.data;
@@ -36,18 +35,17 @@ export const actions = {
       return;
     }
 
-    await axios
+    const response = await axios
       .post(`/budgets.json?auth=${idToken}`, data)
-      .then(res => {
-        commit("storeBudget", { ...data, id: res.data.name });
-
-        // Ugly temporary solution to set the id as a property
-        dispatch("updateBudget");
-      })
       .catch(error => console.log(error));
+
+    commit("storeBudget", { ...data, id: response.data.name });
+
+    // Ugly temporary solution to set the id as a property
+    dispatch("updateBudget");
   },
 
-  addBudgetListItem({ commit, state, getters, dispatch }, data) {
+  addBudgetListItem({ commit, getters, dispatch }, data) {
     const item = {
       id: uuidv4(),
       budgetId: getters.getBudgetId,
@@ -69,7 +67,7 @@ export const actions = {
     dispatch("updateBudget");
   },
 
-  updateBudgetListItem({ commit, state, getters, dispatch }, data) {
+  updateBudgetListItem({ commit, getters, dispatch }, data) {
     const items = getters.getBudgetItems;
 
     if (items === undefined || items.length === 0) {
@@ -96,7 +94,7 @@ export const actions = {
     }
   },
 
-  deleteBudgetListItem({ commit, state, getters, dispatch }, id) {
+  deleteBudgetListItem({ commit, getters, dispatch }, id) {
     const items = getters.getBudgetItems;
 
     if (items === undefined || items.length === 0) {
@@ -145,12 +143,11 @@ export const actions = {
       remaining: remainings
     };
 
-    await axios
+    const response = await axios
       .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
-      .then(res => {
-        commit("storeBudget", { ...res.data });
-      })
       .catch(error => console.log(error));
+
+    commit("storeBudget", { ...response.data });
   },
   async updateBudgetAmount({ commit, getters, rootGetters }, newTotalSum) {
     const idToken = rootGetters.idToken;
@@ -174,11 +171,10 @@ export const actions = {
       amount: newTotalSum
     };
 
-    await axios
+    const response = await axios
       .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
-      .then(res => {
-        commit("storeBudget", { ...res.data });
-      })
       .catch(error => console.log(error));
+
+    commit("storeBudget", { ...response.data });
   }
 };

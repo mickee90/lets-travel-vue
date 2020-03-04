@@ -44,7 +44,7 @@
         <spinner />
       </template>
 
-      <template v-else>
+      <template v-show="markers.length > 0">
         <GmapMap
           ref="mapRef"
           :center="markers[0] ? markers[0].position : { lat: 10, lng: 10 }"
@@ -149,10 +149,8 @@ export default {
         desc: this.selectedMarkerDesc.trim()
       };
 
-      console.log(newMarker);
-
-      /* this.$store.dispatch("map/storeMarker", newMarker);
-      this.resultList = []; */
+      this.$store.dispatch("map/storeMarker", newMarker);
+      this.resultList = [];
     },
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;

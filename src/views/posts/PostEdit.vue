@@ -1,10 +1,10 @@
 <template>
   <div class="container content posts">
     <div class="post-body">
-      <form class="col-12">
+      <div class="col-12">
         <div class="trip-row submit-btn-bar">
           <div class="col p-0">
-            <button onclick="history.back()" class="btn btn-secondary">
+            <button @click.prevent="$router.go(-1)" class="btn btn-secondary">
               Cancel
             </button>
           </div>
@@ -107,9 +107,9 @@
           ></ul>
           <div id="map-dummy" class="col-12" style="height: 0;"></div>
         </div>
-      </form>
+      </div>
+      <tab-bar></tab-bar>
     </div>
-    <tab-bar></tab-bar>
   </div>
 </template>
 
