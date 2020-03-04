@@ -18,9 +18,7 @@ export const actions = {
       id: uuidv4()
     };
 
-    await axios
-      .post(`/mapMarkers.json?auth=${tokenId}`, newMarker)
-      .catch(err => console.log(err));
+    await axios.post(`/mapMarkers.json?auth=${tokenId}`, newMarker);
 
     commit("addMarker", newMarker);
   },
@@ -34,11 +32,9 @@ export const actions = {
       return false;
     }
 
-    const response = await axios
-      .get(
-        `/mapMarkers.json?auth=${tokenId}&orderBy="tripId"&equalTo="${tripId}"`
-      )
-      .catch(err => console.log(err));
+    const response = await axios.get(
+      `/mapMarkers.json?auth=${tokenId}&orderBy="tripId"&equalTo="${tripId}"`
+    );
 
     const tempMarkers = response.data;
 

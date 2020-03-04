@@ -10,11 +10,9 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .get(
-        `/checklists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-      )
-      .catch(error => console.log(error));
+    const response = await axios.get(
+      `/checklists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+    );
 
     const tempItems = response.data;
 
@@ -46,9 +44,10 @@ export const actions = {
       completed_at: new Date().toISOString().split("T")[0]
     };
 
-    const response = await axios
-      .post(`/checklists.json?auth=${idToken}`, newItem)
-      .catch(error => console.log(error));
+    const response = await axios.post(
+      `/checklists.json?auth=${idToken}`,
+      newItem
+    );
 
     commit("addChecklistItems", { ...newItem, id: response.data.name });
   },
@@ -61,9 +60,7 @@ export const actions = {
       return;
     }
 
-    await axios
-      .delete(`/checklists/${id}.json?auth=${idToken}`)
-      .catch(error => console.log(error));
+    await axios.delete(`/checklists/${id}.json?auth=${idToken}`);
 
     const index = getters.getChecklistItems.findIndex(item => item.id === id);
 

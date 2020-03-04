@@ -14,9 +14,9 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .get(`/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`)
-      .catch(error => console.log(error));
+    const response = await axios.get(
+      `/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+    );
 
     const budget = response.data;
 
@@ -35,9 +35,7 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .post(`/budgets.json?auth=${idToken}`, data)
-      .catch(error => console.log(error));
+    const response = await axios.post(`/budgets.json?auth=${idToken}`, data);
 
     commit("storeBudget", { ...data, id: response.data.name });
 
@@ -143,9 +141,10 @@ export const actions = {
       remaining: remainings
     };
 
-    const response = await axios
-      .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
-      .catch(error => console.log(error));
+    const response = await axios.put(
+      `/budgets/${budgetId}.json?auth=${idToken}`,
+      newBudget
+    );
 
     commit("storeBudget", { ...response.data });
   },
@@ -171,9 +170,10 @@ export const actions = {
       amount: newTotalSum
     };
 
-    const response = await axios
-      .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
-      .catch(error => console.log(error));
+    const response = await axios.put(
+      `/budgets/${budgetId}.json?auth=${idToken}`,
+      newBudget
+    );
 
     commit("storeBudget", { ...response.data });
   }

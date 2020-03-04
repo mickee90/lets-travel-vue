@@ -13,11 +13,9 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .get(
-        `/bucketlists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-      )
-      .catch(error => console.log(error));
+    const response = await axios.get(
+      `/bucketlists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+    );
 
     const tempItems = response.data;
 
@@ -46,9 +44,10 @@ export const actions = {
       completed_at: new Date().toISOString().split("T")[0]
     };
 
-    const response = await axios
-      .post(`/bucketlists.json?auth=${idToken}`, newItem)
-      .catch(error => console.log(error));
+    const response = await axios.post(
+      `/bucketlists.json?auth=${idToken}`,
+      newItem
+    );
 
     commit("addBucketlistItems", { ...newItem, id: response.data.name });
   },
@@ -61,9 +60,7 @@ export const actions = {
       return;
     }
 
-    await axios
-      .delete(`/bucketlists/${id}.json?auth=${idToken}`)
-      .catch(error => console.log(error));
+    await axios.delete(`/bucketlists/${id}.json?auth=${idToken}`);
 
     const index = getters.getBucketlistItems.findIndex(item => item.id === id);
 

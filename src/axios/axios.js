@@ -33,11 +33,23 @@ instance.defaults.headers.get["Accepts"] = "application/json";
 instance.interceptors.response.use(
   response => response,
   error => {
+    if (error.response.status === 500) {
+      console.log(error.response.status, error.response.statusText);
+    }
+
+    if (error.response.status === 400) {
+      console.log(error.response.status, error.response.statusText);
+      alert("Could not be found!");
+    }
+
     if (error.response.status === 401) {
       router.replace("/login");
     }
 
+    //if (![400, 401].includes(error.response.status)) {
+    console.log(error.response.status, error.response.statusText);
     return Promise.reject(error);
+    //}
   }
 );
 

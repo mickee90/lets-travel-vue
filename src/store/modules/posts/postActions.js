@@ -11,9 +11,7 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .get(`/posts/${id}.json?auth=${idToken}`)
-      .catch(error => console.log(error));
+    const response = await axios.get(`/posts/${id}.json?auth=${idToken}`);
 
     commit("storePost", { ...response.data });
   },
@@ -27,10 +25,9 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .get(`/posts.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`)
-      .catch(error => console.log(error));
-
+    const response = await axios.get(
+      `/posts.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+    );
     const tempPosts = response.data;
 
     const posts = Object.keys(tempPosts).map(postId => {
@@ -55,9 +52,7 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .post(`/posts.json?auth=${idToken}`, data)
-      .catch(error => console.log(error));
+    const response = await axios.post(`/posts.json?auth=${idToken}`, data);
 
     commit("addPost", response.data);
   },
@@ -71,9 +66,10 @@ export const actions = {
       return;
     }
 
-    const response = await axios
-      .put(`/posts/${updatedPost.id}.json?auth=${idToken}`, updatedPost)
-      .catch(error => console.log(error));
+    const response = await axios.put(
+      `/posts/${updatedPost.id}.json?auth=${idToken}`,
+      updatedPost
+    );
 
     const post = response.data;
     console.log(post, response);
