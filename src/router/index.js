@@ -16,6 +16,7 @@ import Maps from "../views/maps/Maps.vue";
 import Checklist from "../views/checklists/Checklist.vue";
 import Bucketlist from "../views/bucketlist/Bucketlist.vue";
 import Budget from "../views/budget/Budget.vue";
+import Profile from "../views/auth/Profile.vue";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,14 @@ const routes = [
     component: Register,
     meta: {
       guest: true
+    }
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+    meta: {
+      requiresAuth: true
     }
   },
   {
