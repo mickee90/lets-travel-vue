@@ -40,10 +40,6 @@ export const actions = {
     return getters.getPosts;
   },
 
-  storePosts({ commit }, data) {
-    commit("storePosts", data);
-  },
-
   async createPost({ commit, rootGetters }, data) {
     const idToken = rootGetters.idToken;
     const userId = rootGetters.userId;

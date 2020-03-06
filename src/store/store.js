@@ -9,6 +9,7 @@ import { checklistStore } from "./modules/checklists/checklistStore";
 import { bucketlistStore } from "./modules/bucketlists/bucketlistStore";
 import { budgetStore } from "./modules/budgets/budgetStore";
 import { mapStore } from "./modules/maps/mapStore";
+import { profileStore } from "./modules/profiles/profileStore";
 
 const VuexPersist = new VuexPersistance({
   key: "vuex-lt",
@@ -25,7 +26,8 @@ export default new Vuex.Store({
     checklist: checklistStore,
     bucketlist: bucketlistStore,
     budget: budgetStore,
-    map: mapStore
+    map: mapStore,
+    profile: profileStore
   },
   actions: {
     resetAllStates({ commit }) {
