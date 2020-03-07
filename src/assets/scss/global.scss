@@ -306,3 +306,8 @@ body {
 .pre-formatted {
   white-space: pre;
 }
+
+input.invalid {
+  border-bottom: 1px solid red !important;
+  background-color: #ffc9aa !important;
+}

@@ -10,14 +10,16 @@ export const actions = {
       return;
     }
 
-    const response = await axios.post(`/profiles.json?auth=${idToken}`, data);
+    const response = await axios
+      .post(`/profiles.json?auth=${idToken}`, data)
+      .then(res => res.data);
 
-    commit("storeProfile", response.data);
+    if (!response) return;
+
+    commit("storeProfile", response);
   },
 
   async editProfile({ commit, getters, rootGetters }, updatedProfile) {
-    console.log("editProfile", updatedProfile);
-
     const idToken = rootGetters.idToken;
     const userId = rootGetters.userId;
 
@@ -26,23 +28,20 @@ export const actions = {
       return;
     }
 
-    const response = await axios.put(
-      `/profiles/${userId}.json?auth=${idToken}`,
-      { ...getters.getProfile, ...updatedProfile }
-    );
+    const response = await axios
+      .put(`/profiles/${userId}.json?auth=${idToken}`, {
+        ...getters.getProfile,
+        ...updatedProfile
+      })
+      .then(res => res.data);
 
-    console.log(response);
-    const profile = response.data;
+    if (!response) return;
 
-    console.log("updated profile", profile);
-
-    commit("storeProfile", profile);
+    commit("storeProfile", response);
   },
 
   editAvatar({ dispatch, getters }, avatar) {
     const profile = { ...getters.getProfile, avatar };
-
-    console.log("editAvatar", avatar, profile);
 
     dispatch("editProfile", profile);
   }

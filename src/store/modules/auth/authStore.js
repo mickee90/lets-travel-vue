@@ -1,9 +1,15 @@
-import { mutations } from './authMutations'
-import { actions } from './authActions'
-import { getters } from './authGetters'
+import { mutations } from "./authMutations";
+import { actions } from "./authActions";
+import { getters } from "./authGetters";
 
 const getInitState = () => {
-  return { idToken: null, userId: null, expirationDate: null, user: null };
+  return {
+    idToken: null,
+    userId: null,
+    expirationDate: null,
+    refreshToken: null,
+    user: null
+  };
 };
 
 export const authStore = {
