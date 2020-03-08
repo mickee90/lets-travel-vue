@@ -10,14 +10,16 @@ export const actions = {
       return;
     }
 
-    const response = await axios.get(
-      `/checklists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-    );
+    const response = await axios
+      .get(
+        `/checklists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+      )
+      .then(res => res.data);
 
-    const tempItems = response.data;
+    if (!response) return;
 
-    const items = Object.keys(tempItems).map(checklistId => {
-      return { ...tempItems[checklistId], id: checklistId };
+    const items = Object.keys(response).map(checklistId => {
+      return { ...response[checklistId], id: checklistId };
     });
 
     commit("storeChecklistItems", items);
@@ -44,12 +46,13 @@ export const actions = {
       completed_at: new Date().toISOString().split("T")[0]
     };
 
-    const response = await axios.post(
-      `/checklists.json?auth=${idToken}`,
-      newItem
-    );
+    const response = await axios
+      .post(`/checklists.json?auth=${idToken}`, newItem)
+      .then(res => res.data);
 
-    commit("addChecklistItems", { ...newItem, id: response.data.name });
+    if (!response) return;
+
+    commit("addChecklistItems", { ...newItem, id: response.name });
   },
   async deleteChecklistItem({ commit, getters, rootGetters }, id) {
     const idToken = rootGetters.idToken;
@@ -60,7 +63,11 @@ export const actions = {
       return;
     }
 
-    await axios.delete(`/checklists/${id}.json?auth=${idToken}`);
+    const response = await axios
+      .delete(`/checklists/${id}.json?auth=${idToken}`)
+      .then(res => res.data);
+
+    if (!response) return;
 
     const index = getters.getChecklistItems.findIndex(item => item.id === id);
 
@@ -76,10 +83,11 @@ export const actions = {
       return;
     }
 
-    await axios.put(
-      `/checklists/${updatedItem.id}.json?auth=${idToken}`,
-      updatedItem
-    );
+    const response = await axios
+      .put(`/checklists/${updatedItem.id}.json?auth=${idToken}`, updatedItem)
+      .then(res => res.data);
+
+    if (!response) return;
 
     const items = [...state.checklistItems].map(tempItem =>
       tempItem.id !== updatedItem.id

@@ -12,14 +12,15 @@
                   name: 'trip-edit',
                   params: { tripId: this.$store.getters.getTrip.id }
                 }"
-                >Edit</router-link
-              >
+              >Edit</router-link>
+              <button @click.prevent="onDelete">Delete</button>
             </div>
           </div>
 
           <div class="card-body">
             <div class="date_box">
-              Start date: {{ trip.startDate }} to {{ trip.endDate }}
+              Start date: {{ trip.startDate }}
+              <span v-if="trip.endDate !== ''">to {{ trip.endDate }}</span>
             </div>
 
             <div class="desc_box pre-formatted" v-text="trip.description"></div>
@@ -37,6 +38,13 @@ export default {
     return {
       trip: {}
     };
+  },
+  methods: {
+    onDelete() {
+      if (confirm("Are you sure you want to delete the trip?")) {
+        this.$store.dispatch("deleteTrip", this.trip.id);
+      }
+    }
   },
   created() {
     this.trip = this.$store.getters.getTrip;

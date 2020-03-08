@@ -43,7 +43,8 @@ export const actions = {
       userId: response.localId,
       firstName: payload.firstName,
       lastName: payload.lastName,
-      username: payload.username
+      username: payload.username,
+      email: payload.email
     };
 
     dispatch("storeUser", newUser);

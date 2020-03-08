@@ -6,18 +6,10 @@
           <form @submit.prevent="onSubmit" class="col-12">
             <div class="trip-row submit-btn-bar">
               <div class="col p-0">
-                <button onclick="history.back()" class="btn btn-secondary">
-                  Cancel
-                </button>
+                <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
               </div>
               <div class="col pr-0 text-right">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  @click.prevent="onSubmit"
-                >
-                  Create trip
-                </button>
+                <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Create trip</button>
               </div>
             </div>
 
@@ -133,6 +125,7 @@ export default {
     };
   },
   methods: {
+    // @todo If end date is set, make sure it's bigger than start date.
     onSubmit() {
       this.$v.$touch();
 

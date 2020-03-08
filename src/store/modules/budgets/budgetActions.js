@@ -14,16 +14,16 @@ export const actions = {
       return;
     }
 
-    const response = await axios.get(
-      `/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-    );
+    const response = await axios
+      .get(`/budgets.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`)
+      .then(res => res.data);
 
-    const budget = response.data;
+    if (!response) return;
 
-    if (Object.keys(budget).length === 0) {
+    if (Object.keys(response).length === 0) {
       dispatch("initBudget", { ...getInitState().budget, tripId });
     } else {
-      commit("storeBudget", { ...budget[Object.keys(budget)[0]] });
+      commit("storeBudget", { ...response[Object.keys(response)[0]] });
     }
   },
   async initBudget({ commit, getters, dispatch, rootGetters }, data) {
@@ -35,9 +35,13 @@ export const actions = {
       return;
     }
 
-    const response = await axios.post(`/budgets.json?auth=${idToken}`, data);
+    const response = await axios
+      .post(`/budgets.json?auth=${idToken}`, data)
+      .then(res => res.data);
 
-    commit("storeBudget", { ...data, id: response.data.name });
+    if (!response) return;
+
+    commit("storeBudget", { ...data, id: response.name });
 
     // Ugly temporary solution to set the id as a property
     dispatch("updateBudget");
@@ -141,12 +145,13 @@ export const actions = {
       remaining: remainings
     };
 
-    const response = await axios.put(
-      `/budgets/${budgetId}.json?auth=${idToken}`,
-      newBudget
-    );
+    const response = await axios
+      .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
+      .then(res => res.data);
 
-    commit("storeBudget", { ...response.data });
+    if (!response) return;
+
+    commit("storeBudget", { ...response });
   },
   async updateBudgetAmount({ commit, getters, rootGetters }, newTotalSum) {
     const idToken = rootGetters.idToken;
@@ -170,11 +175,12 @@ export const actions = {
       amount: newTotalSum
     };
 
-    const response = await axios.put(
-      `/budgets/${budgetId}.json?auth=${idToken}`,
-      newBudget
-    );
+    const response = await axios
+      .put(`/budgets/${budgetId}.json?auth=${idToken}`, newBudget)
+      .then(res => res.data);
 
-    commit("storeBudget", { ...response.data });
+    if (!response) return;
+
+    commit("storeBudget", { ...response });
   }
 };

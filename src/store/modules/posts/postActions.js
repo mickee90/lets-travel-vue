@@ -11,9 +11,13 @@ export const actions = {
       return;
     }
 
-    const response = await axios.get(`/posts/${id}.json?auth=${idToken}`);
+    const response = await axios
+      .get(`/posts/${id}.json?auth=${idToken}`)
+      .then(res => res.data);
 
-    commit("storePost", { ...response.data });
+    if (!response) return;
+
+    commit("storePost", { ...response });
   },
 
   async fetchPosts({ commit, getters, rootGetters }, tripId) {
@@ -25,14 +29,14 @@ export const actions = {
       return;
     }
 
-    const response = await axios.get(
-      `/posts.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-    );
+    const response = await axios
+      .get(`/posts.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`)
+      .then(res => res.data);
 
-    const tempPosts = response.data;
+    if (!response) return;
 
-    const posts = Object.keys(tempPosts).map(postId => {
-      return { ...tempPosts[postId], id: postId };
+    const posts = Object.keys(response).map(postId => {
+      return { ...response[postId], id: postId };
     });
 
     commit("storePosts", posts);
@@ -49,9 +53,13 @@ export const actions = {
       return;
     }
 
-    const response = await axios.post(`/posts.json?auth=${idToken}`, data);
+    const response = await axios
+      .post(`/posts.json?auth=${idToken}`, data)
+      .then(res => res.data);
 
-    commit("addPost", response.data);
+    if (!response) return;
+
+    commit("addPost", response);
   },
 
   async editPost({ state, commit, rootGetters }, updatedPost) {
@@ -63,21 +71,19 @@ export const actions = {
       return;
     }
 
-    const response = await axios.put(
-      `/posts/${updatedPost.id}.json?auth=${idToken}`,
-      updatedPost
-    );
+    const response = await axios
+      .put(`/posts/${updatedPost.id}.json?auth=${idToken}`, updatedPost)
+      .then(res => res.data);
 
-    const post = response.data;
-    console.log(post, response);
+    if (!response) return;
 
     const posts = [...state.posts].map(item =>
       item.id !== updatedPost.id ? item : { ...item, ...updatedPost }
     );
 
     commit("storePosts", posts);
-    commit("storePost", post);
+    commit("storePost", response);
 
-    router.replace(`/${post.tripId}/post/${post.id}`);
+    router.replace(`/${response.tripId}/post/${response.id}`);
   }
 };

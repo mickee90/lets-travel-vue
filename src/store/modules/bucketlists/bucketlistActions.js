@@ -13,14 +13,16 @@ export const actions = {
       return;
     }
 
-    const response = await axios.get(
-      `/bucketlists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
-    );
+    const response = await axios
+      .get(
+        `/bucketlists.json?auth=${idToken}&orderBy="tripId"&equalTo="${tripId}"`
+      )
+      .then(res => res.data);
 
-    const tempItems = response.data;
+    if (!response) return;
 
-    const items = Object.keys(tempItems).map(bucketlistId => {
-      return { ...tempItems[bucketlistId], id: bucketlistId };
+    const items = Object.keys(response).map(bucketlistId => {
+      return { ...response[bucketlistId], id: bucketlistId };
     });
 
     commit("storeBucketlistItems", items);
@@ -44,12 +46,13 @@ export const actions = {
       completed_at: new Date().toISOString().split("T")[0]
     };
 
-    const response = await axios.post(
-      `/bucketlists.json?auth=${idToken}`,
-      newItem
-    );
+    const response = await axios
+      .post(`/bucketlists.json?auth=${idToken}`, newItem)
+      .then(res => res.data);
 
-    commit("addBucketlistItems", { ...newItem, id: response.data.name });
+    if (!response) return;
+
+    commit("addBucketlistItems", { ...newItem, id: response.name });
   },
   async deleteBucketlistItem({ commit, getters, rootGetters }, id) {
     const idToken = rootGetters.idToken;
@@ -60,7 +63,11 @@ export const actions = {
       return;
     }
 
-    await axios.delete(`/bucketlists/${id}.json?auth=${idToken}`);
+    const response = await axios
+      .delete(`/bucketlists/${id}.json?auth=${idToken}`)
+      .then(res => res.data);
+
+    if (!response) return;
 
     const index = getters.getBucketlistItems.findIndex(item => item.id === id);
 
@@ -76,10 +83,11 @@ export const actions = {
       return;
     }
 
-    await axios.put(
-      `/bucketlists/${updatedItem.id}.json?auth=${idToken}`,
-      updatedItem
-    );
+    const response = await axios
+      .put(`/bucketlists/${updatedItem.id}.json?auth=${idToken}`, updatedItem)
+      .then(res => res.data);
+
+    if (!response) return;
 
     const items = [...state.bucketlistItems].map(tempItem =>
       tempItem.id !== updatedItem.id

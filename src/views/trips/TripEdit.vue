@@ -5,18 +5,10 @@
         <form @submit.prevent="onSubmit" class="col-12">
           <div class="trip-row submit-btn-bar">
             <div class="col p-0">
-              <button onclick="history.back()" class="btn btn-secondary">
-                Cancel
-              </button>
+              <button onclick="history.back()" class="btn btn-secondary">Cancel</button>
             </div>
             <div class="col pr-0 text-right">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="onSubmit"
-              >
-                Save
-              </button>
+              <button type="submit" class="btn btn-primary" @click.prevent="onSubmit">Save</button>
             </div>
           </div>
 
@@ -83,9 +75,7 @@
           </div>
 
           <div class="form-group trip-row">
-            <label for="trip_image_id" class="col-md-12"
-              >Background image</label
-            >
+            <label for="trip_image_id" class="col-md-12">Background image</label>
           </div>
 
           <div class="form-group trip-row">
@@ -102,7 +92,7 @@
                   />
                   <img :src="getImage(tripImage.path)" :alt="tripImage.title" />
                 </label>
-              </div>-->
+            </div>-->
           </div>
         </form>
       </div>
@@ -131,6 +121,8 @@ export default {
     getImage(path) {
       return require(path);
     },
+
+    // @todo If end date is set, make sure it's bigger than start date.
     onSubmit() {
       this.$v.$touch();
 

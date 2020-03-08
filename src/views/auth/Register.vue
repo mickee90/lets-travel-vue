@@ -6,143 +6,145 @@
           <div class="card-header">Register</div>
 
           <div class="card-body">
-            <form method="POST" @submit.prevent="onSubmit">
-              <div class="form-group row">
-                <label
-                  for="firstName"
-                  class="col-md-4 col-form-label text-md-right"
-                  >First name <span class="required">*</span></label
-                >
+            <div class="form-group row">
+              <label for="firstName" class="col-md-4 col-form-label text-md-right">
+                First name
+                <span class="required">*</span>
+              </label>
 
-                <div class="col-md-6">
-                  <input
-                    id="firstName"
-                    type="text"
-                    v-model="firstName"
-                    class="form-control"
-                    :class="{ invalid: $v.firstName.$error }"
-                    name="firstName"
-                    required
-                    autocomplete="firstName"
-                    autofocus
-                    @blur="$v.firstName.$touch()"
-                  />
-                  <p v-if="$v.firstName.$error">
-                    First name is required
-                  </p>
-                </div>
+              <div class="col-md-6">
+                <input
+                  id="firstName"
+                  type="text"
+                  v-model="firstName"
+                  class="form-control"
+                  :class="{ invalid: $v.firstName.$error }"
+                  required
+                  autocomplete="firstName"
+                  autofocus
+                  @blur="$v.firstName.$touch()"
+                />
+                <p v-if="$v.firstName.$error">First name is required</p>
               </div>
+            </div>
 
-              <div class="form-group row">
-                <label
-                  for="lastName"
-                  class="col-md-4 col-form-label text-md-right"
-                  >Last name <span class="required">*</span></label
-                >
+            <div class="form-group row">
+              <label for="lastName" class="col-md-4 col-form-label text-md-right">
+                Last name
+                <span class="required">*</span>
+              </label>
 
-                <div class="col-md-6">
-                  <input
-                    id="lastName"
-                    type="text"
-                    v-model="lastName"
-                    class="form-control"
-                    :class="{ invalid: $v.lastName.$error }"
-                    name="lastName"
-                    required
-                    autocomplete="lastName"
-                    @blur="$v.lastName.$touch()"
-                  />
-                  <p v-if="$v.lastName.$error">
-                    Last name is required
-                  </p>
-                </div>
+              <div class="col-md-6">
+                <input
+                  id="lastName"
+                  type="text"
+                  v-model="lastName"
+                  class="form-control"
+                  :class="{ invalid: $v.lastName.$error }"
+                  name="lastName"
+                  required
+                  autocomplete="lastName"
+                  @blur="$v.lastName.$touch()"
+                />
+                <p v-if="$v.lastName.$error">Last name is required</p>
               </div>
+            </div>
 
-              <div class="form-group row">
-                <label
-                  for="username"
-                  class="col-md-4 col-form-label text-md-right"
-                  >Username <span class="required">*</span></label
-                >
+            <div class="form-group row">
+              <label for="username" class="col-md-4 col-form-label text-md-right">
+                Username
+                <span class="required">*</span>
+              </label>
 
-                <div class="col-md-6">
-                  <input
-                    id="username"
-                    type="text"
-                    v-model="username"
-                    class="form-control"
-                    :class="{ invalid: $v.username.$error }"
-                    name="username"
-                    required
-                    autocomplete="username"
-                    @blur="$v.username.$touch()"
-                  />
-                  <p v-if="!$v.username.email">
-                    Please provide a valid email address
-                  </p>
-                </div>
+              <div class="col-md-6">
+                <input
+                  id="username"
+                  type="text"
+                  v-model="username"
+                  class="form-control"
+                  :class="{ invalid: $v.username.$error }"
+                  required
+                  autocomplete="username"
+                  @blur="$v.username.$touch()"
+                />
+                <p v-if="!$v.username.email">Please provide a valid email address</p>
               </div>
+            </div>
 
-              <div class="form-group row">
-                <label
-                  for="password"
-                  class="col-md-4 col-form-label text-md-right"
-                  >Password <span class="required">*</span></label
-                >
+            <div class="form-group row">
+              <label for="email" class="col-md-4 col-form-label text-md-right">
+                Email
+                <span class="required">*</span>
+              </label>
 
-                <div class="col-md-6">
-                  <input
-                    id="password"
-                    type="password"
-                    class="form-control"
-                    :class="{ invalid: $v.password.$error }"
-                    name="password"
-                    required
-                    autocomplete="current-password"
-                    v-model="password"
-                    @blur="$v.password.$touch()"
-                  />
-                  <small>
-                    The password must be at least
-                    {{ $v.password.$params.minVal }} characters
-                  </small>
-                </div>
+              <div class="col-md-6">
+                <input
+                  id="email"
+                  type="text"
+                  v-model="email"
+                  class="form-control"
+                  :class="{ invalid: $v.email.$error }"
+                  required
+                  autocomplete="email"
+                  @blur="$v.email.$touch()"
+                />
+                <p v-if="!$v.email.email">Please provide a valid email address</p>
               </div>
+            </div>
 
-              <div class="form-group row">
-                <label
-                  for="password"
-                  class="col-md-4 col-form-label text-md-right"
-                  >Confirm Password <span class="required">*</span></label
-                >
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right">
+                Password
+                <span class="required">*</span>
+              </label>
 
-                <div class="col-md-6">
-                  <input
-                    id="confirmPassword"
-                    type="password"
-                    class="form-control"
-                    :class="{ invalid: $v.confirmPassword.$error }"
-                    name="confirmPassword"
-                    required
-                    v-model="confirmPassword"
-                    @blur="$v.confirmPassword.$touch()"
-                  />
-                </div>
+              <div class="col-md-6">
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  :class="{ invalid: $v.password.$error }"
+                  required
+                  autocomplete="current-password"
+                  v-model="password"
+                  @blur="$v.password.$touch()"
+                />
+                <small>
+                  The password must be at least
+                  {{ $v.password.$params.minVal }} characters
+                </small>
               </div>
+            </div>
 
-              <div class="form-group row mb-0">
-                <div class="col-md-8 offset-md-4">
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    :disabled="$v.$invalid"
-                    @click.prevent="onSubmit"
-                  >
-                    Sign up
-                  </button>
-                </div>
+            <div class="form-group row">
+              <label for="password" class="col-md-4 col-form-label text-md-right">
+                Confirm Password
+                <span class="required">*</span>
+              </label>
+
+              <div class="col-md-6">
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  class="form-control"
+                  :class="{ invalid: $v.confirmPassword.$error }"
+                  required
+                  v-model="confirmPassword"
+                  @blur="$v.confirmPassword.$touch()"
+                />
               </div>
-            </form>
+            </div>
+
+            <div class="form-group row mb-0">
+              <div class="col-md-8 offset-md-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  :disabled="$v.$invalid"
+                  @click.prevent="onSubmit"
+                >Sign up</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -160,6 +162,7 @@ export default {
       firstName: "",
       lastName: "",
       username: "",
+      email: "",
       password: "",
       confirmPassword: ""
     };
@@ -179,6 +182,11 @@ export default {
       }
 
       if (this.$v.username.$error) {
+        alert("The username is not a valid email address");
+        return;
+      }
+
+      if (this.$v.email.$error) {
         alert("The email address is not valid");
         return;
       }
@@ -197,6 +205,7 @@ export default {
         username: this.username,
         firstName: this.firstName,
         lastName: this.lastName,
+        email: this.email,
         password: this.password
       });
     }
@@ -223,6 +232,10 @@ export default {
             return Object.keys(res.data).length === 0;
           });
       } */
+    },
+    email: {
+      required,
+      email
     },
     password: {
       required,
